@@ -1,0 +1,70 @@
+############################################################################
+# Naam:    install-common-Ubuntu-9.10-desktop.txt                          #
+# Gebruik: Wordt gebruikt door script install.sh                           #
+# Doel:    Algemeen installatiebestand                                     #
+# Gedrag:  Een regel in het bestand met op de eerste positie een:          #
+#            (spatie) wordt overgeslagen,                                  #
+#          # wordt overgeslagen (commentaar),                              #
+#          S is sleutelbeschrijving (woord), en sleutelopdracht,           #
+#          B is pakketbronbeschrijving (woord), en pakketbron,             #
+#          A is PPA-beschrijving (woord) en PPA (Personal Package Archive),#
+#          P is pakket (is een woord), en pakketbeschrijving,              #
+#          X is opdrachtbeschrijving (woord), en opdracht,                 #
+#          iets anders wordt afgekeurd.                                    #
+#          De regels worden op volgorde verwerkt.                          #
+#          Regel S komt voor B, de rest kan op willekeurig volgorde.       #
+# Auteur:  Karel Zimmer, <http://karelzimmer.nl>, <info@karelzimmer.nl>    #
+# ------------------------------------------------------------------------ #
+# De volgende variabelen zijn beschikbaar:                                 #
+# DISTR_CODENAME  bijvoorbeeld hardy, intrepid, jaunty, karmic, of lucid   #
+# bitsize         32   of 64                                               #
+# arch            i386 of amd64                                            #
+############################################################################
+# VERSION_NUM=3.4.0
+# VERSION_DAT=2010-03-22
+
+#--------------------------------------------------------------------------#
+# Sleutelopdrachten.                                                       #
+# Worden uitgevoerd via $ sudo <sleutelopdracht>.                          #
+#--------------------------------------------------------------------------#
+S Medibuntu wget http://packages.medibuntu.org/medibuntu-key.gpg -O- | \
+  apt-key add -
+
+#--------------------------------------------------------------------------#
+# Pakketbronnen.                                                           #
+# Worden toegevoegd aan /etc/apt/sources.list, kan via                     #
+# Systeem > Beheer > Softwarebronnen > Overige software > Toevoegen...     #
+#--------------------------------------------------------------------------#
+B Medibuntu deb http://packages.medibuntu.org/ $DISTR_CODENAME free non-free
+
+#--------------------------------------------------------------------------#
+# PPAs (Personal Package Archives).                                        #
+# Worden toegevoegd via $ sudo add-apt-repository <PPA>, of via            #
+# Systeem > Beheer > Softwarebronnen > Overige software > Toevoegen...     #
+#--------------------------------------------------------------------------#
+
+#--------------------------------------------------------------------------#
+# Pakketten.                                                               #
+# Worden geinstalleerd via $ sudo apt-get install <pakket>, of via         #
+# Systeem > Beheer > Synaptic pakketbeheer of Ubuntu softwarecentrum.      #
+#--------------------------------------------------------------------------#
+P amsn                     chatten
+P backintime-gnome         backup via snapshots
+P gbrainy                  hersenkraker- en trainingsspel
+P libdvdcss2               beveiligde DVDs afspelen (uit Medibuntu)
+P menu                     bevat su-to-root (gebruikt Back In Time)
+P ubuntu-restricted-extras metapakket multimedia
+P vlc                      multimediaspeler
+
+#--------------------------------------------------------------------------#
+# Opdrachten.                                                              #
+# Worden uitgevoerd als $ sudo <opdracht>.                                 #
+#--------------------------------------------------------------------------#
+# Skype is gratis bellen over het Internet (VoIP).
+# (wanneer Skype gaat werken met AMD64-repo daarnaartoe overschakelen, zie
+#  i386 "deb http://download.skype.com/linux/repos/debian/ stable non-free")
+X Skype_pakket_downloaden wget --directory-prefix=/tmp --no-clobber \
+  http://www.skype.com/go/getskype-linux-beta-ubuntu-$bitsize
+X Skype_pakket_installeren dpkg --install /tmp/skype*$arch.deb
+X Skype_pakket_fixen       apt-get --fix-broken --assume-yes install
+#EOF

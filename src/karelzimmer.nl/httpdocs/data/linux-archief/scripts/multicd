@@ -1,0 +1,81 @@
+#!/bin/bash
+#############################################################################
+# Bestand:  multicd                                                         #
+# Doel:     Maak opstartbare USB-stick met meerdere distributies met        #
+#           MultiCD.                                                        #
+# Gebruik:  In het terminalvenster:                                         #
+#           multicd                                                         #
+# Auteur:   Karel Zimmer (http://karelzimmer.nl, info@karelzimmer.nl)       #
+# ------------------------------------------------------------------------- #
+# Auteursrecht © 2017 Karel Zimmer.                                         #
+#                                                                           #
+# Dit programma is vrije software: u mag het herdistribueren en/of wijzigen #
+# onder de voorwaarden van de GNU Algemene Publieke Licentie zoals          #
+# gepubliceerd door de Free Software Foundation, onder versie 3 van de      #
+# Licentie of (naar uw keuze) elke latere versie.                           #
+#                                                                           #
+# Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar   #
+# ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garanties die           #
+# GEBRUIKELIJK ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK   #
+# DOEL.  Zie de GNU Algemene Publieke Licentie voor meer details.           #
+#                                                                           #
+# U hoort een kopie van de GNU Algemene Publieke Licentie te hebben         #
+# ontvangen samen met dit programma. Als dat niet het geval is, zie         #
+# http://www.gnu.org/licenses/.                                             #
+# ------------------------------------------------------------------------- #
+# Versies:  1.0.0   2017-04-10  Eerste versie.                              #
+#############################################################################
+readonly VERSION_NUMBER=1.2.1
+readonly RELEASE_DATE=2017-05-25
+
+# Opties en argumenten worden genegeerd, geen actie.
+PROGNAME="$(basename "$0")"
+[[ $@ ]] && echo "$PROGNAME: opties en argumenten worden genegeerd"
+
+usb_van="/media/$USER/SanDisk128G/ISOs"
+#usb_van="$HOME/Downloads"
+usb_naar='/dev/sdb'
+multicd_home="$HOME/MultiCD"
+
+# Hoofdlijn.
+cd $HOME
+
+rm --force --recursive "$multicd_home"
+git clone git://github.com/IsaacSchemm/MultiCD.git
+
+command_exists mkisofs || sudo apt-get install mkisofs
+command_exists genisoimage || sudo apt-get install genisoimage
+
+# http://tldp.org/LDP/abs/html/abs-guide.html:
+#  If the pattern matches no file, it is expanded to itself.
+#  To prevent this, set the nullglob option
+#+   (shopt -s nullglob).
+shopt -s nullglob
+for file in $usb_van/*.iso; do
+    echo "Verwerk $file..."
+    ln --force --symbolic "$file" "$multicd_home/$(basename "$file")"
+done
+
+cd $multicd_home
+chmod +x multicd*.sh
+./multicd*.sh
+[[ $? = 0 ]] || exit
+
+echo
+echo "Aangemaakt: $multicd_home/multicd.iso"
+file "$multicd_home/multicd.iso"
+du -h "$multicd_home/multicd.iso"
+echo
+echo "Als $multicd_home/multicd.iso succesvol is gemaakt, voer dan uit:"
+echo "1. Verwijder USB-stick $(dirname $usb_van)."
+echo '2. Plaats de gewenste USB-stick.'
+echo "3. Controleer dat de geplaatste USB-stick is aangekoppeld op \
+$usb_naar BELANGRIJK!:"
+echo '   journalctl -en'
+echo "4. Start Terminalvenster en typ, of kopieer en plak:"
+echo "   sudo dd if=$multicd_home/multicd.iso of=$usb_naar bs=4M \
+status=progress; sudo sync"
+
+exit 0
+
+# Einde script.

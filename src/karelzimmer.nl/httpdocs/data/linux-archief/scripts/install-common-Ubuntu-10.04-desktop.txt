@@ -1,0 +1,71 @@
+############################################################################
+# Naam:    install-common-Ubuntu-10.04-desktop.txt                         #
+# Gebruik: Wordt gebruikt door script install.sh                           #
+# Doel:    Algemeen installatiebestand.                                    #
+# Gedrag:  De regels bevatten opdracht;# beschrijving.                     #
+#          De ; is na de opdracht opgenomen zodat een regel ook zonder     #
+#          install.sh gebruikt kan worden op de commandoregel in het       #
+#          Terminalvenster (via kopiëren en plakken).                      #
+#          Een regel die begint met # of spatie wordt overgeslagen.        #
+#          De regels worden op volgorde verwerkt.                          #
+#          Meerdere spaties, opgenomen om leesbaarheid te vergroten,       #
+#          worden door install.sh vervangen door één spatie.               #
+# Auteur:  Karel Zimmer, <http://karelzimmer.nl>, <info@karelzimmer.nl>.   #
+############################################################################
+# VERSION_NUM=4.3.0
+# VERSION_DAT=2010-10-18
+
+#--------------------------------------------------------------------------#
+# Instellingen.                                                            #
+#--------------------------------------------------------------------------#
+cn=$(lsb_release --codename --short);echo '$cn='$cn;  # distributiecodenaam
+ac='sudo apt-get install';echo '$ac='$ac;             # APT-commando
+ao='--assume-yes --install-recommends';echo '$ao='$ao;# APT-opties
+bs=$(getconf LONG_BIT);echo '$bs='$bs;                # Bitsize, 32 of 64
+
+#--------------------------------------------------------------------------#
+# Sleutels toevoegen.                                                      #
+#--------------------------------------------------------------------------#
+wget --quiet --output-document=-                                           \
+    http://packages.medibuntu.org/medibuntu-key.gpg | apt-key add -;       \
+    # Medibuntu sleutel
+
+#--------------------------------------------------------------------------#
+# Pakketbronnen toevoegen.                                                 #
+#--------------------------------------------------------------------------#
+##Voeg pakketbron alleen toe als deze nog niet aanwezig is;
+##add-apt-repository voegt voor deb's altijd regels toe aan sources.list:
+if ! grep --quiet 'packages.medibuntu.org' /etc/apt/sources.list;          \
+then                                                                       \
+    sudo add-apt-repository "deb http://packages.medibuntu.org $cn         \
+    free non-free";                                                        \
+fi;                                                                        \
+# Medibuntu pakketbron
+
+sudo add-apt-repository ppa:tualatrix/ppa;                                 \
+# Ubuntu Tweak pakketbron en sleutel
+
+#--------------------------------------------------------------------------#
+# Pakkettenbronnen herladen.                                               #
+#--------------------------------------------------------------------------#
+sudo apt-get update;# pakketbronnen herladen
+
+#--------------------------------------------------------------------------#
+# Pakketten installeren.                                                   #
+#--------------------------------------------------------------------------#
+$ac amsn                     $ao;# chatten
+$ac backintime-gnome         $ao;# snapshotbackup
+$ac gtk-gnutella             $ao;# bestanden zoeken, delen, en downloaden
+$ac libdvdcss2               $ao;# beveiligde DVDs afspelen; uit Medibuntu
+$ac menu                     $ao;# bevat su-to-root; voor Back In Time
+$ac sound-juicer             $ao;# muziek-cd's kopiëren
+$ac ubuntu-restricted-extras $ao;# metapakket multimedia
+$ac ubuntu-tweak             $ao;# Ubuntu configureren; uit Tualatrix PPA
+$ac vlc                      $ao;# multimediaspeler
+$ac w${bs}codecs             $ao;# videocodecs; uit Medibuntu
+
+#--------------------------------------------------------------------------#
+# Verwijder overbodige pakketten.                                          #
+#--------------------------------------------------------------------------#
+sudo apt-get autoremove --assume-yes;# verwijder overbodige pakketten
+#EOF

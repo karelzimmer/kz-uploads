@@ -1,0 +1,43 @@
+Veranderingen (verbeteringen) in Ubuntu Ubuntu 17.10 desktp t.o.v. 16.04 LTS desktop
+Zie ook hhttps://wiki.ubuntu.com/Releases
+
+GEWIJZIGD:
+Ubuntu Desktop alleen 64-bit beeldbestanden (.iso), upgrade vanaf 17.04 32-bit is wel mogelijk, of gebruik X/Lubuntu Desktop 32-bit
+Ubuntu Dock i.p. Unity Starter
+Ubuntu Dock icoontjes bevatten standaard voortgangsindicator en niet-gelezen teller
+GNOME Shell en GNOME3 (3.26) i.p.v. Unity (Bureaubladomgeving)
+Wayland i.p.v. Xorg (Grafische bediening)
+GDM i.p.v. LightDM (Beeldebheerder), login-scherm gebruikt nu virtueel terminal nummer 1 i.p.v. 7
+Vensterknoppen weer rechts i.p.v. links
+Swap file i.p.v. swap partitie.
+Instellingen-app heeft een gewijzigd uiterlijk
+Printerinstellingen nu in het Instellingen-app
+Kalender ondersteunt nu terugkerende afspraken en koppeling met bijv. Google of Nextcloud
+LibreOfiice nu versie 5.4
+Rhythmbox muziekspeler gebruikt nu een aangepast (Ubuntu) uiterlijk
+Eenvoudig scannen volgt nu de GNOME-richtlijnen en is nu onderdeel van de kern van GNOME
+Systeem Log is vervagen door Logs
+Bestanden (v/h Nautilus)
+Archief-app
+Gedit (Editor)
+Déjà Dup (Back-up/reservekopieën)
+Linux kernel 4.13
+Firefox 56
+Thunderbird 52
+LibreOffice 5.4.1
+Netwerkconfiguratie is nu eenvoudiger (gebruikt nu netplan)
+
+NIEUW:
+Snap application formaat
+Driverless printer-installatie
+Dynamische Werkbladen (rechts op het scherm)
+Ubuntu-eigen Dash-to-Dock GNOME-extensie "Ubuntu Dock"
+Ubuntu-eigen App-indicator GNOME-extensie
+Nacht-licht app (warmere kleuren, beter voor de ogen)
+
+VERWIJDERD:
+Unity's HUD, Globale menu's, Geluid-menu, Notify-OSD
+Python 2
+Ubuntu Desktop 32-bit beeldbestanden (.iso)
+
+Karel Zimmer, oktober 2017

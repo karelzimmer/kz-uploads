@@ -1,0 +1,342 @@
+#!/bin/bash
+#############################################################################
+# Bestand:  splitmd5sums                                                    #
+# Doel:     Splits MD5SUMS-controlebestanden op.                            #
+# Gebruik:  In het terminalvenster:                                         #
+#           splitmd5sums [OPTIES]                                           #
+#           Gebruik optie --usage of --help voor meer informatie.           #
+# Gebruikt: script-common.sh (algemene variabelen en functies)              #
+# Auteur:   Karel Zimmer (http://karelzimmer.nl, info@karelzimmer.nl)       #
+# ------------------------------------------------------------------------- #
+# Auteursrecht © 2013-2016 Karel Zimmer.                                    #
+#                                                                           #
+# Dit programma is vrije software: u mag het herdistribueren en/of wijzigen #
+# onder de voorwaarden van de GNU Algemene Publieke Licentie zoals          #
+# gepubliceerd door de Free Software Foundation, onder versie 3 van de      #
+# Licentie of (naar uw keuze) elke latere versie.                           #
+#                                                                           #
+# Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar   #
+# ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garanties die           #
+# GEBRUIKELIJK ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK   #
+# DOEL.  Zie de GNU Algemene Publieke Licentie voor meer details.           #
+#                                                                           #
+# U hoort een kopie van de GNU Algemene Publieke Licentie te hebben         #
+# ontvangen samen met dit programma. Als dat niet het geval is, zie         #
+# http://www.gnu.org/licenses/.                                             #
+# ------------------------------------------------------------------------- #
+# Versies:  1.0.0   2013-09-02  Eerste versie.                              #
+#           2.0.0   2013-09-02  Voeg suffix '.md5sum' toe in plaats van het #
+#                               wijzigen van suffix '.iso' naar '.md5sum'.  #
+#           3.0.0   2014-02-09  Maak alleen .md5sum aan als de .iso bestaat.#
+#           4.0.0   2015-07-08  Hernoemd (-/- .sh).                         #
+#           5.0.0   2016-05-20  Van eigen log naar system log en systemd    #
+#                               journal.                                    #
+#############################################################################
+readonly VERSION_NUMBER=5.1.1
+readonly RELEASE_DATE=2016-06-09
+
+#############################################################################
+# Instellingen                                                              #
+#############################################################################
+
+#---------------------------------------------------------------------------#
+# Algemene instellingen                                                     #
+# ------------------------------------------------------------------------- #
+# Lees de algemene variabelen en functies in.                               #
+#---------------------------------------------------------------------------#
+source  "$(dirname "$0")"/script-common.sh &> /dev/null ||
+    {
+        echo 'Het algemeen scriptbestand (script-common.sh) is niet gevonden'
+        echo "of bevat fouten.  Is 'wget karelzimmer.nl/s;. s' uitgevoerd?"
+        echo 'Zie voor informatie http://karelzimmer.nl en klik op LEESMIJ.'
+        exit 1
+    }
+
+#---------------------------------------------------------------------------#
+# Globale constanten                                                        #
+#---------------------------------------------------------------------------#
+# Algemeen ------------------------------------------------------------------
+readonly SCRIPT_NEEDS_SUDO=false        # Geen beheerdersrechten nodig
+readonly FIRST_COPYRIGHTYEAR=2013       # Eerste auteursrechtjaar
+readonly OPTION_NEEDS_ARG=false         # Geen optie met een verplicht argum.
+readonly OPTIONS_HELP=$(cat << OPTIONS_HELP
+OPTIONS_HELP
+)                                       # Extra hulp-opties
+readonly OPTIONS_USAGE=$(cat << OPTIONS_USAGE
+OPTIONS_USAGE
+)                                       # Extra gebruiks-opties
+
+# Specifiek -----------------------------------------------------------------
+readonly SEARCHDIR=$XDG_DOWNLOAD_DIR    # Zoekmap
+readonly SEARCH4=MD5SUMS*               # Zoekargument
+
+# Foutcodes -----------------------------------------------------------------
+
+#---------------------------------------------------------------------------#
+# Globale variabelen                                                        #
+#---------------------------------------------------------------------------#
+# Array, integer ------------------------------------------------------------
+
+# Boolean -------------------------------------------------------------------
+declare NO_MD5SUMSFILE_FOUND=true       # Geen MD5SUMS-controlebestand gev.
+declare NO_ISOFILE_FOUND=true           # Geen beeldbestand gevonden
+
+# Overig --------------------------------------------------------------------
+declare MD5SUMSFILE=''                  # Gevonden MD5SUMS-bestand
+declare MD5SUMSRECORD=''                # Regel in MD5SUMS-bestand
+
+#############################################################################
+# Functies                                                                  #
+#############################################################################
+
+#-Functie-------------------------------------------------------------------#
+# Naam: toon_hulp                                                           #
+# Doel: Uitleg werking script.                                              #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+toon_hulp() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+
+    toon_gebruik_sc $OPTION_USAGE
+    cat << HULP
+
+Splits MD5SUMS-controlebestanden op.
+
+$OPTIONS_HELP_SC$OPTIONS_HELP
+
+Combineer in map $SEARCHDIR de controlebestanden (MD5SUMS) en beeldbestanden
+(.iso) tot <versie>.iso en <versie>.iso.md5sum.
+
+De regels in de gevonden controlebestanden worden opgesplitst naar
+controlebestanden (<versie>.iso.md5sum) als het bijbehorende beeldbestand
+(<versie>.iso) aanwezig is.
+
+De MD5SUMS-controlebestanden worden na het opsplitsen verwijderd.
+
+De gedownloade beeldbestanden en door dit script aangemaakte
+controlebestanden kunnen zo snel gecontroleerd worden en naar een
+(opstartbare) USB-stick gekopieerd worden.
+
+Voorbeeld:
+ Gedownload zijn de beeldbestanden:
+     ubuntu-13.04-desktop-amd64.iso
+     ubuntu-13.04-desktop-i386.iso
+ Gedownload is het MD5SUMS-controlebestand MD5SUMS met als inhoud:
+     8d72e2db7e72e13813731eab37a14d26 *ubuntu-13.04-desktop-amd64.iso
+     5d5d1a7da2a0659b163d4f8bd70fbe6f *ubuntu-13.04-desktop-i386.iso
+     7d335ca541fc4945b674459cde7bffb9 *ubuntu-13.04-server-amd64.iso
+     73d595b804149fca9547ed94db8ff44f *ubuntu-13.04-server-i386.iso
+ Controlebestand MD5SUMS wordt opgesplitst in twee controlebestanden:
+  1. controlebestand ubuntu-13.04-desktop-amd64.iso.md5sum met als inhoud:
+     8d72e2db7e72e13813731eab37a14d26 *ubuntu-13.04-desktop-amd64.iso
+  2. controlebestand ubuntu-13.04-desktop-i386.iso.md5sum met als inhoud:
+     5d5d1a7da2a0659b163d4f8bd70fbe6f *ubuntu-13.04-desktop-i386.iso
+ Controlebestand MD5SUMS wordt verwijderd.
+
+Voor meer informatie zie op http://karelzimmer.nl het document
+Checklist Linux downloads en media.
+HULP
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: controleer_invoer                                                   #
+# Doel: Initiële controles en/of acties.                                    #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+controleer_invoer() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+
+    :
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: toon_invoer                                                         #
+# Doel: Toon wat het script gaat doen.                                      #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+toon_invoer() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+
+    tput clear
+    info "$HEADER"
+    info
+    info "Zoekmap: $SEARCHDIR"
+    info "Zoekarg: $SEARCH4"
+    info
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: verwerk_invoer                                                      #
+# Doel: Zoek MD5SUMS-bestanden in de downloadsmap.                          #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+verwerk_invoer() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+
+    cd  "$SEARCHDIR"
+    verwerk_rc  "$PROGNAME:$FUNCNAME:$LINENO"   \
+                'ga naar downloadsmap'          \
+                $?
+
+    while read MD5SUMSFILE; do
+        if $NO_MD5SUMSFILE_FOUND; then
+            NO_MD5SUMSFILE_FOUND=false
+            info
+        fi
+
+        verwerk_md5sums_bestand
+        info
+    done < <(
+        find    .                   \
+                -name "$SEARCH4"    \
+                -type f             \
+                -print              \
+                2> /dev/null
+        )
+
+    $NO_MD5SUMSFILE_FOUND && warning "Geen MD5SUMS-controlebestanden \
+gevonden in $SEARCHDIR."
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: verwerk_md5sums_bestand                                             #
+# Doel: Verwerk een gevonden MD5SUMS-bestand.                               #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+verwerk_md5sums_bestand() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+
+    MD5SUMSFILE=$(basename "$MD5SUMSFILE")
+    info "$MD5SUMSFILE gevonden."
+    NO_ISOFILE_FOUND=true
+
+    while read MD5SUMSRECORD; do
+        verwerk_md5sums_regel
+    done < "$MD5SUMSFILE"
+
+    $NO_ISOFILE_FOUND && info 'Geen beeldbestanden (.iso) gevonden.'
+
+    rm          --verbose       \
+                "$MD5SUMSFILE"  |& $LOGCMD
+    verwerk_rc  "$PROGNAME:$FUNCNAME:$LINENO"   \
+                'verwijder md5sumsbestand'      \
+                $?
+    info "$MD5SUMSFILE verwijderd."
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: verwerk_md5sums_regel                                               #
+# Doel: Verwerk regel uit een MD5SUMS-bestand.                              #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+verwerk_md5sums_regel() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+
+    #-----------------------------------------------------------------------#
+    # Afsplitsen bestandsnaam.                                              #
+    # --------------------------------------------------------------------- #
+    # Voorbeeld:                                                            #
+    # ----+----1----+----2----+----3----                                    #
+    # 8d72e2db7e72e13813731eab37a14d26 *ubuntu-13.04-desktop-amd64.iso ->   #
+    #               ubuntu-13.04-desktop-amd64.iso                          #
+    # en ook:                                                               #
+    # 4b00890360261dfc5c83f36377e30d62  debian-live-7.0.0...iso ->          #
+    #               debian-live-7.0.0-amd64-gnome-desktop.iso               #
+    # ea0cff0cef658deafacffbf06c9c64bd  debian-live-7.0.0...iso.contents -> #
+    #               debian-live-7.0.0-amd64-gnome-desktop.iso.contents      #
+    # en ook:                                                               #
+    # a2b1a962a7d8df4aab68c22618d7cb2c  gparted-live-0.16.2-1b-i486.iso ->  #
+    #               gparted-live-0.16.2-1b-i486.iso                         #
+    # 79496318f7b5f271cecc2fc14c4f03c7  gparted-live-0.16.2-1b-i486.zip ->  #
+    #               gparted-live-0.16.2-1b-i486.zip                         #
+    #-----------------------------------------------------------------------#
+    isofile=${MD5SUMSRECORD:34}
+
+    #-----------------------------------------------------------------------#
+    # Voeg .md5sum toe aan bestandsnaam.                                    #
+    # --------------------------------------------------------------------- #
+    # Voorbeeld:                                                            #
+    # ubuntu-13.04-desktop-amd64.iso ->                                     #
+    #               ubuntu-13.04-desktop-amd64.iso.md5sum                   #
+    # en ook:                                                               #
+    # debian-live-7.0.0-amd64-gnome-desktop.iso ->                          #
+    #           debian-live-7.0.0-amd64-gnome-desktop.iso.md5sum            #
+    # debian-live-7.0.0-amd64-gnome-desktop.iso.contents ->                 #
+    #           debian-live-7.0.0-amd64-gnome-desktop.iso.contents.md5sum   #
+    # en ook:                                                               #
+    # gparted-live-0.16.2-1b-i486.iso ->                                    #
+    #           gparted-live-0.16.2-1b-i486.iso.md5sum                      #
+    # gparted-live-0.16.2-1b-i486.zip ->                                    #
+    #           gparted-live-0.16.2-1b-i486.zip.md5sum                      #
+    #-----------------------------------------------------------------------#
+    md5sumfile=$isofile.md5sum
+
+    #-----------------------------------------------------------------------#
+    # Maak .md5sum-bestandje alleen aan als de .iso bestaat.                #
+    #-----------------------------------------------------------------------#
+    if [[ -e $isofile ]]; then
+        NO_ISOFILE_FOUND=false
+        echo "$MD5SUMSRECORD" > "$md5sumfile" 2> /dev/null
+        verwerk_rc  "$PROGNAME:$FUNCNAME:$LINENO"   \
+                    'maak .md5sums-bestand aan'     \
+                    $?
+        info "$MD5SUMSFILE opgesplist naar $md5sumfile"
+    fi
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: toon_afsluiten                                                      #
+# Doel: Afsluitende meldingen en/of acties.                                 #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+toon_afsluiten() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+
+    info
+    info "Om de beeldbestanden (.iso) te controleren typ, of kopieer en \
+plak:"
+    info --bold "cd $SEARCHDIR;md5sum --check *.md5sum"
+    info
+    info 'En om vervolgens USB-sticks te maken typ, of kopieer en plak:'
+    info --bold 'mkusb'
+
+    return 0
+}
+
+
+#############################################################################
+# Hoofdlijn                                                                 #
+#############################################################################
+# init_script
+{
+    controleer_invoer_sc    "$@"
+    controleer_gebruiker_sc $SCRIPT_NEEDS_SUDO
+    controleer_invoer
+    toon_invoer
+}
+# verwerk
+{
+    toon_gestart_sc
+    verwerk_invoer
+    toon_gestopt_sc
+}
+# afsl_script
+{
+    toon_afsluiten
+    toon_afsluiten_sc
+    exit 0
+}
+
+# Einde script.

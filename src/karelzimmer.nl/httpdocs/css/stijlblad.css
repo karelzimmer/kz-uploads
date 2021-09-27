@@ -1,0 +1,297 @@
+/***************************************************************************/
+/* Bestand:  stijlblad.css                                                 */
+/* Doel:     Stijlblad voor website karelzimmer.nl                         */
+/* Gebruik:  Door alle websitepagina's                                     */
+/* Gebruikt: -                                                             */
+/* Auteur:   Karel Zimmer (https://karelzimmer.nl, info@karelzimmer.nl)    */
+/***************************************************************************/
+
+/*-------------------------------------------------------------------------*/
+/* Body                                                                    */
+/*-------------------------------------------------------------------------*/
+body {
+    background-color: seashell;
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    margin: 50px;
+    padding: 0;
+    }
+
+/*-------------------------------------------------------------------------*/
+/* Tekst groter                                                            */
+/*-------------------------------------------------------------------------*/
+span {
+    font-size:20px;
+    font-weight: bold;
+    font-style: italic;
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    }
+
+/*-------------------------------------------------------------------------*/
+/* Tekst rood                                                              */
+/*-------------------------------------------------------------------------*/
+mark.red {
+    color:red;
+    background: none;
+}
+
+/*-------------------------------------------------------------------------*/
+/* Koptekst                                                                */
+/*-------------------------------------------------------------------------*/
+header {
+    margin-bottom: 25px;
+    text-align: center; 
+    }
+
+/*-------------------------------------------------------------------------*/
+/* Navigatie                                                               */
+/*-------------------------------------------------------------------------*/
+nav.hdr {
+    margin-bottom: 50px;
+    }
+
+nav.top {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    text-align: right;
+    }
+
+/*-------------------------------------------------------------------------*/
+/* Paragrafen                                                              */
+/*-------------------------------------------------------------------------*/
+p.mid {
+    font-weight: bold;
+    text-align: center;
+    }
+
+/*-------------------------------------------------------------------------*/
+/* Tabellen                                                                */
+/*-------------------------------------------------------------------------*/
+table {
+    background-color: gainsboro;
+    border-collapse: collapse; /* anders rand om tabel en iedere cel */
+    table-layout: auto;
+    width: 100%;
+    }
+
+table.hdr {
+    height: 75px;
+    table-layout: fixed;
+    }
+
+/* De zebrastrepen met nth-child van een oneven tabelrij */
+tbody tr:nth-child(odd) {
+    background-color: gainsboro;
+    }
+
+/* De zebrastrepen met nth-child van een even tabelrij */
+tbody tr:nth-child(even) {
+    background-color: darkseagreen;
+    }
+
+table, th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: left;
+    text-decoration: none;
+    }
+
+th {
+    background-color: darkseagreen;
+    font-weight: bold;
+    }
+
+th.mid, td.mid {
+    text-align: center;
+    }
+
+td.sel {
+    background-color: darkseagreen;
+    }
+
+ /* 1-koloms tabel */
+.t1c1 {
+    width: 100%;
+    }
+
+ /* 3-koloms tabel */
+.t3c1 {
+    width: 30%;
+    }
+
+.t3c2 {
+    width: 7%;
+    }
+
+.t3c3 {
+    width: 63%;
+    }
+
+/*-------------------------------------------------------------------------*/
+/* Horizontale lijn                                                        */
+/*-------------------------------------------------------------------------*/
+hr {
+    background-color: black;
+    border: 0;
+    color: black;
+    height: 1px;
+    margin-top: 40px;
+    }
+
+/*-------------------------------------------------------------------------*/
+/* Links                                                                   */
+/*-------------------------------------------------------------------------*/
+a {
+    color: darkblue;
+    font-weight: bold;
+    }
+
+a.hdr {
+    border: 10px solid transparent;
+    color: darkblue;
+    font-weight: bold;
+    }
+
+a img {
+    border-top: 2px solid transparent;
+    color: darkblue;
+    }
+
+a:link, a:visited {
+    text-decoration: none;
+    }
+
+a:hover, a:active {
+    background-color: darkblue;
+    color: seashell;
+    }
+
+a img:hover, a img:active {
+    background-color: darkblue;
+    }
+
+a.img:hover, a.img:active {
+    background-color: transparent;
+    border-top: 2px solid darkblue;
+    color: transparent;
+    }
+
+a.topl {
+    border: 0 solid transparent;
+    color: black;
+    float: left;
+    font-size: small;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    }
+
+a.topr {
+    border: 0 solid transparent;
+    color: black;
+    float: right;
+    font-size: small;
+    font-weight: normal;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    }
+    
+a.topl:hover, a.topl:active, a.topr:hover, a.topr:active {
+    background-color: black;
+    color: seashell;
+    }
+
+/*-------------------------------------------------------------------------*/
+/* Toon modal box met informatie na klikken op ABOUT-link en LEESMIJ-link. */
+/* Ref: http://www.webdesignerdepot.com/2012/10/                           */
+/*                            creating-a-modal-window-with-html5-and-css3/ */
+/*-------------------------------------------------------------------------*/
+.modalbox {
+	background: rgba(0,0,0,.8);
+	bottom: 0;
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+	left: 0;
+	opacity:0;
+	pointer-events: none;
+	position: fixed;
+	right: 0;
+	top: 0;
+	-moz-transition: opacity 400ms ease-in;
+	-webkit-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	z-index: 99999;
+    }
+
+.modalbox:target {
+	opacity:1;
+	pointer-events: auto;
+    }
+
+.modalbox > div {
+	background: seashell;
+	border-radius: 10px;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	position: relative;
+	width: 550px;
+    }
+
+.sluit {
+	background: darkseagreen;
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
+	border-radius: 12px;
+	color: darkblue;
+	font-weight: bold;
+	line-height: 25px;
+	position: absolute;
+	right: -12px;
+	text-align: center;
+	text-decoration: none;
+	top: -10px;
+	width: 24px;
+    }
+
+.sluit:hover {
+    background: darkblue;
+    color: darkseagreen;
+    }
+
+/*-------------------------------------------------------------------------*/
+/* Lijsten                                                                 */
+/*-------------------------------------------------------------------------*/
+ul {
+    background-color: gainsboro;
+    border: 1px solid black;
+    font-weight: bold;
+    }
+
+li.hdr {
+    background-color: darkseagreen;
+    border-bottom: 4px solid darkseagreen;
+    border-top: 4px solid darkseagreen;
+    list-style-type: circle;
+    }
+
+li.dat {
+    background-color: gainsboro;
+    border-bottom: 0 solid gainsboro;
+    border-top: 0 solid gainsboro;
+    list-style-type: disc;
+    }
+
+ol {
+    background-color: gainsboro;
+    border: 1px solid black;
+    margin-bottom: 0;
+    }
+
+/*-------------------------------------------------------------------------*/
+/* Voettekst                                                               */
+/*-------------------------------------------------------------------------*/
+footer {
+    font-weight: normal;
+    margin-top: 50px;
+    text-align: center;
+    }
+
+/* Einde stijlblad. */

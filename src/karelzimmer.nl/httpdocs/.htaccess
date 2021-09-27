@@ -1,0 +1,29 @@
+AddHandler x-httpd-php73 .php
+# File: .htacces (Hypertext access)
+# Desc: Server-side redirection (server-side rewriting)
+# Auth: Karel Zimmer, 16-08-2010
+# Chgd: Karel Zimmer, 05-09-2010, permanent added
+# Chgd: Karel Zimmer, 12-09-2012, stuff moved to data
+# Chgd: Karel Zimmer, 15-09-2012, extra level 'site'
+# Chgd: Karel Zimmer, 12-10-2012, separate data (e.g. PDF, sh) from site content
+# Chgd: Karel Zimmer, 28-01-2015, getchecklists.sh added
+# Chgd: Karel Zimmer, 08-07-2015, redirect naar scripts -/- .sh
+# Chgd: Karel Zimmer, 28-07-2015, redirect s naar getscripts en c naar getchecklists
+# Chgd: Karel Zimmer, 05-06-2016, redirect s naar getstarted, verwijder redirect c
+# Chgd: Karel Zimmer, 08-02-2019, https
+# Chgd: Karel Zimmer, 15-03-2019, redirect s naar getdeb
+# Chgd: Karel Zimmer, 09-04-2019, redirect s naar getstarted
+# Chgd: Karel Zimmer, 16-04-2019, sitestructuur aangepast
+# Chgd: Karel Zimmer, 15-05-2019, DirectoryIndex toegevoegd, index.html verwijderd
+# Chgd: Karel Zimmer, 29-03-2020, redirect s naar scripts
+# Chgd: Karel Zimmer, 15-05-2020, redirect s naar kzscripts
+# Chgd: Karel Zimmer, 10-10-2020, redirect s, kz, en kzgetscripts naar kzgetscripts
+# Chgd: Karel Zimmer, 08-08-2021, redirect s en kz naar kz-getdeb
+# Chgd: Karel Zimmer, 13-08-2021, redirect kz naar kz-getdeb
+# Chgd: Karel Zimmer, 07-09-2021, redirect kz naar kz-getdeb
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^(www\.karelzimmer\.nl|karelzimmer\.nl)$ [NC]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://karelzimmer.nl/$1 [R,L]
+DirectoryIndex html/home.html
+Redirect permanent /kz https://karelzimmer.nl/data/linux/scripts/kz-getdeb

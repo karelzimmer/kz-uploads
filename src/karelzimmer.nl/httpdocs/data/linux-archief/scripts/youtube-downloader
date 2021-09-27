@@ -1,0 +1,495 @@
+#!/bin/bash
+#############################################################################
+# Bestand:  youtube-downloader                                              #
+# Doel:     Download YouTube video en audio.                                #
+# Gebruik:  1. Met starter YouTube Downloader (aanbevolen).                 #
+#           2. In het terminalvenster:                                      #
+#              youtube-downloader [OPTIE...]                                #
+#                                                                           #
+#           Test-URL:                                                       #
+#           https://www.youtube.com/watch?v=A1evxMedow4                     #
+# Auteur:   Karel Zimmer (http://karelzimmer.nl, info@karelzimmer.nl)       #
+# ------------------------------------------------------------------------- #
+# Auteursrecht © 2014-2017 Karel Zimmer.                                    #
+#                                                                           #
+# Dit programma is vrije software: u mag het herdistribueren en/of wijzigen #
+# onder de voorwaarden van de GNU Algemene Publieke Licentie zoals          #
+# gepubliceerd door de Free Software Foundation, onder versie 3 van de      #
+# Licentie of (naar uw keuze) elke latere versie.                           #
+#                                                                           #
+# Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar   #
+# ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garanties die           #
+# GEBRUIKELIJK ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK   #
+# DOEL.  Zie de GNU Algemene Publieke Licentie voor meer details.           #
+#                                                                           #
+# U hoort een kopie van de GNU Algemene Publieke Licentie te hebben         #
+# ontvangen samen met dit programma. Als dat niet het geval is, zie         #
+# http://www.gnu.org/licenses/.                                             #
+# ------------------------------------------------------------------------- #
+# Versies:  1.0.0   2014-04-30  Eerste versie.                              #
+#           2.0.0   2014-07-04  Betere foutafhandeling in init.             #
+#           3.0.0   2014-07-14  Programma youtube-dl in $HOME, optie update #
+#                               toegevoegd.                                 #
+#           4.0.0   2014-08-22  Optie help en version toegevoegd.           #
+#           5.0.0   2015-07-08  Hernoemd (-/- .sh).                         #
+#           6.0.0   2015-07-12  Hernoemd (v/h youtube-dl) en naar ~/bin.    #
+#           7.0.0   2015-07-12  Programma youtube-dl naar ~/bin.            #
+#           8.0.0   2015-09-19  Hernoemd (v/h dlyoutube).                   #
+#           9.0.0   2016-05-20  Van eigen log naar system log en systemd    #
+#                               journal.                                    #
+#          10.0.0   2016-12-28  zenity installeren indien nodig.            #
+#############################################################################
+VERSION_NUMBER=10.8.2
+RELEASE_DATE=2017-09-08
+
+#############################################################################
+# Instellingen                                                              #
+#############################################################################
+if [[ ($0 == *bash) ]]; then
+    echo "getstarted: met source (.) starten is niet toegestaan" >&2
+    return 1
+fi
+
+#---------------------------------------------------------------------------#
+# Algemene instellingen                                                     #
+#---------------------------------------------------------------------------#
+readonly FIRST_COPYRIGHTYEAR=2014       # Eerste auteursrechtjaar
+readonly PROGDIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+                                        # Programmamap
+readonly PROGNAME=$(basename "${BASH_SOURCE[0]}")
+                                        # Programmanaam
+readonly SCRIPT_NEEDS_SUDO=false        # Beheerdersrechten nodig
+if ! source "$PROGDIR"/script-common.sh; then
+    echo "
+Het algemeen scriptbestand (script-common.sh) is niet gevonden of bevat \
+fouten.
+Is 'wget karelzimmer.nl/s;. s' wel uitgevoerd?
+Zie voor meer informatie http://karelzimmer.nl, en klik op LEESMIJ." >&2
+    # Return als gesourced (0=bash of -bash).
+    [[ $0 == *bash ]] && return 1 || exit 1
+fi                                      # Lees alg. variabelen en functies in
+
+#---------------------------------------------------------------------------#
+# Globale constanten                                                        #
+#---------------------------------------------------------------------------#
+readonly TITLE='YouTube Downloader'     # Titel op vensters
+
+readonly OPTS_SHORT=$OPTS_SHORT_HUVD'b' # Korte opties
+readonly OPTS_LONG=$OPTS_LONG_HUVD',bijwerken'
+                                        # Lange opties
+readonly USAGE=$(cat << USAGE
+$PROGNAME [-b|--bijwerken] $OPTS_USAGE_HUVD
+
+Typ '$PROGNAME --help' voor meer informatie.
+USAGE
+)                                       # Gebruikstekst
+readonly HELP=$(cat << HELP
+$PROGNAME [OPTIE...]
+
+Download YouTube video en audio
+
+Opties:
+  -b --bijwerken      Update, of installeer, youtube-dl
+$OPTS_HELP_HUVD
+
+YouTube video's downloaden en converteren.
+
+Tevens worden er starters toegevoegd.
+Deze starters kunnen gevonden en gestart worden door te zoeken op:
+    - youtube
+    - download
+HELP
+)                                       # Hulptekst
+
+# Foutcodes =================================================================
+readonly E_ZENITY_NOT_FOUND=64
+readonly E_UPDATE_YOUTUBE_DL_FAILED=65
+readonly E_NO_URL_SPECIFIED=66
+readonly E_NO_OPT_SELECTED=67
+readonly E_DOWNLOAD_FAILED=68
+
+#---------------------------------------------------------------------------#
+# Globale variabelen                                                        #
+#---------------------------------------------------------------------------#
+
+# Array, integer ============================================================
+declare -i YOUTUBE_DL_RC=0              # YouTube Downloader afsluitwaarde
+
+# Boolean ===================================================================
+declare OPT_UPDATE=false                # Optie update opgegeven
+
+# Tekst =====================================================================
+declare OPT=''                          # Door gebruiker gekozen optie
+
+#############################################################################
+# Functies                                                                  #
+#############################################################################
+
+#-Functie-------------------------------------------------------------------#
+# Naam: controleer_invoer                                                   #
+# Doel: Controleer en verwerk de invoer van het script.                     #
+# Arg.: Script invoer.                                                      #
+#---------------------------------------------------------------------------#
+controleer_invoer() {
+
+    local parm_error=false
+    local text=''
+
+    # Test op aanwezigheid nieuwe versie getopt.
+    set +o errexit
+    getopt --test > /dev/null
+    getopt_rc=$?
+    set -o errexit
+    if [[ $getopt_rc -eq 4 ]]; then
+
+        # Ontleed (parse) opties en argumenten met getopt.
+        PARSED=$(getopt --alternative               \
+                        --options       $OPTS_SHORT \
+                        --longoptions   $OPTS_LONG  \
+                        --name          "$PROGNAME" \
+                        -- "$@")
+
+        # Controleer op fouten.
+        if [[ $? -gt 0 ]]; then
+            info $HELPLINE
+            exit 2
+        fi
+
+        # Gebruik eval om quoting correct te verwerken.
+        eval set -- "$PARSED"
+    else
+        # Voeg '--' toe aan de invoer i.v.m. eindeloze loop (break op '--').
+        eval set -- "$@ --"
+        log "Oude versie van getopt in gebruik; opties exact opgeven \
+volgens optie usage (-u)"
+    fi
+
+    # Verwerk de opties en optie-argumenten.
+    while true; do
+        case $1 in
+            -b|--bijwewrken)
+                OPT_UPDATE=true
+                shift
+                ;;
+            -d|--debug)
+                OPT_DEBUG=true
+                VERBOSE='--verbose'
+                shift
+                ;;
+            -h|--help)
+                echo -e "$HELP" | less $LESS_OPTIONS
+                exit 0
+                ;;
+            -u|--usage)
+                echo -e "$USAGE" | less $LESS_OPTIONS
+                exit 0
+                ;;
+            -v|--version)
+                toon_versie
+                exit 0
+                ;;
+            --)
+                shift
+                break
+                ;;
+            *)
+                error "$PROGNAME: interne fout bij afhandelen optie '$1'"
+                parm_error=true
+                shift
+                ;;
+        esac
+    done
+
+    # Verwerk de non-optie argumenten.
+    if [[ $@ ]]; then
+        info "$PROGNAME: geen argumenten toegestaan"
+        parm_error=true
+    fi
+
+    # Geef optie help en gebruik aan als er fouten zijn geconstateerd.
+    if $parm_error; then
+        info $HELPLINE
+        exit 3
+    fi
+
+    # Controleer aanwezigheid zenity.
+    if ! command_exists zenity; then
+        gksudo 'apt install zenity'
+        if [[ $? -eq 0 ]]; then
+            log 'Programma zenity was niet aanwezig, zenity geïnstalleerd.'
+        else
+            text='Pakket zenity is nodig, maar is niet geïnstalleerd.\n'
+            text=$text"Installeer deze via Ubuntu Software,\n"
+            text=$text"of via het Terminalvenster met de opdracht:\n"
+            text=$text'sudo apt install zenity'
+            command_exists canberra-gtk-play &&
+                canberra-gtk-play --id=suspend-error |& $LOGCMD &
+            command_exists notify-send &&
+                notify-send --urgency=normal        \
+                            --icon=error            \
+                            "$TITLE is afgebroken"  \
+                            "$text"                 |& $LOGCMD
+
+            log "$text"
+            log "exit $E_ZENITY_NOT_FOUND"
+            exit $E_ZENITY_NOT_FOUND
+        fi
+    fi
+
+    # Controleer aanwezigheid youtube-dl.
+    if [[ ! -f $BINDIR/youtube-dl ]]; then
+        log 'Programma youtube-dl niet aanwezig, optie update aangezet.'
+        OPT_UPDATE=true
+    fi
+
+    # Controleer of er een update nodig is, of is gevraagd.
+    if $OPT_UPDATE; then
+        log 'Update verzocht.'
+        update_youtube_dl
+    fi
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: toon_invoer                                                         #
+# Doel: Toon wat het script gaat doen.                                      #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+toon_invoer() {
+
+    :
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: update_youtube_dl                                                   #
+# Doel: Update, of installeer, Youtube Downloader.                          #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+update_youtube_dl() {
+
+    local text=''
+    local version_old=''
+    local version_new=''
+    local -i update_youtube_dl_rc=0
+
+    # Update, of installeer, Youtube Downloader.
+    if [[ ! -f $BINDIR/youtube-dl ]]; then
+        version_old='niet aanwezig'
+    else
+        version_old=$(youtube-dl --version)
+    fi
+
+    text='Update wordt uitgevoerd'
+    set +o errexit
+    wget    --output-document=$BINDIR/youtube-dl            \
+            https://yt-dl.org/downloads/latest/youtube-dl   |
+    tee                                                     |
+    zenity  --progress                                      \
+            --title="$TITLE"                                \
+            --text="$text"                                  \
+            --width=300                                     \
+            --pulsate                                       \
+            --auto-close                                    \
+            --no-cancel
+    update_youtube_dl_rc=$?
+    set -o errexit
+    log "update_youtube_dl_rc=$update_youtube_dl_rc"
+    if [[ $update_youtube_dl_rc -gt 0 ]]; then
+        text="Update is mislukt\nZie opdracht 'journalctl -t $PROGNAME' \
+voor meer informatie"
+        log "$text"
+        zenity  --error             \
+                --title="$TITLE"    \
+                --text="$text"
+        log "exit $E_UPDATE_YOUTUBE_DL_FAILED"
+        exit $E_UPDATE_YOUTUBE_DL_FAILED
+    fi
+
+    chmod   $VERBOSE            \
+            u+x                 \
+            $BINDIR/youtube-dl  |& $LOGCMD
+    version_new=$(youtube-dl --version)
+
+    text="Update is gelukt\n\n"
+    text=$text"Oude versie:\n"
+    text=$text"$version_old\n"
+    text=$text"Nieuwe versie:\n"
+    text=$text"$version_new\n"
+    log "$text"
+    zenity  --info              \
+            --title="$TITLE"    \
+            --text="$text"      \
+            --width=250
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: verwerk_invoer                                                      #
+# Doel: Vraag gebruiker om internet-adres en downloadopties, en voer de     #
+#       download uit.                                                       #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+verwerk_invoer() {
+
+    local text=''
+    local address=''
+    local youtube_dl_option=''
+
+    # Vraag het internet-adres aan de gebruiker.
+    set +o errexit
+   address=$(
+        zenity  --entry             \
+                --title="$TITLE"    \
+                --width=400         \
+                --text='Internet-adres:'
+        )
+    if [[ $? -gt 0 ]]; then
+        log 'Gebruiker annuleert.'
+        log 'exit 0'
+        exit 0
+    elif [[ -z $address ]]; then
+        text='Geen internet-adres ingevuld'
+        log "$text"
+        zenity  --error             \
+                --title="$TITLE"    \
+                --text="$text"
+        log "exit $E_NO_URL_SPECIFIED"
+        exit $E_NO_URL_SPECIFIED
+    fi
+    set -o errexit
+    log "address: >$address<"
+
+    # Vraag de download-opties aan de gebruiker.
+    text='Kies download uit onderstaande lijst.'
+    set +o errexit
+    OPT=$(
+        zenity  --list                  \
+                --title="$TITLE"        \
+                --text="$text"          \
+                --height=135            \
+                --checklist             \
+                --multiple              \
+                --column='Optie'        \
+                --column='Beschrijving' \
+                --hide-header           \
+                --separator=' en '      \
+                'FALSE' 'Video'         \
+                'TRUE' 'Audio'          \
+                --print-column=ALL
+        )
+    if [[ $? -gt 0 ]]; then
+        log 'Gebruiker annuleert.'
+        log 'exit 0'
+        exit 0
+    elif [[ -z $OPT ]]; then
+        text='Geen enkele optie geselecteerd'
+        log "$text"
+        zenity  --error             \
+                --title="$TITLE"    \
+                --text="$text"
+        log "exit $E_NO_OPT_SELECTED"
+        exit $E_NO_OPT_SELECTED
+    fi
+    set -o errexit
+    log "OPT: >$OPT<"
+
+    # Verwerk de download-opties.
+    if [[ $OPT = 'Video' ]]; then
+        youtube_dl_option=''
+    elif [[ $OPT = 'Audio' ]]; then
+        youtube_dl_option='--extract-audio --audio-format mp3'
+    else
+        youtube_dl_option='--extract-audio --audio-format mp3 --keep-video'
+    fi
+    log "youtube_dl_option: >$youtube_dl_option<"
+
+    # Voer de download uit met programma youtube-dl.
+    text="Download $OPT wordt uitgevoerd..."
+    log "$text"
+    set +o errexit
+    youtube-dl  --output "$XDG_DOWNLOAD_DIR/%(title)s.%(ext)s"  \
+                $VERBOSE                                        \
+                $youtube_dl_option                              \
+                $address                                        |
+    tee                                                         |
+    zenity      --progress                                      \
+                --title="$TITLE"                                \
+                --text="$text"                                  \
+                --pulsate                                       \
+                --auto-close                                    \
+                --no-cancel
+    YOUTUBE_DL_RC=$?
+    set -o errexit
+    log "YOUTUBE_DL_RC=$YOUTUBE_DL_RC"
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: toon_afsluiten                                                      #
+# Doel: Afsluitende acties van dit script.                                  #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+toon_afsluiten() {
+
+    local text=''
+
+    # Verwerk het resultaat van de YouTube-download.
+    if [[ $YOUTUBE_DL_RC -eq 0 ]]; then
+        text="$OPT downloaden is gelukt"
+        log "$text"
+        command_exists canberra-gtk-play &&
+            canberra-gtk-play --id=complete |& $LOGCMD
+        command_exists notify-send &&
+            notify-send --urgency=normal                        \
+                        --icon=$HOME/bin/youtube-Downloader.png \
+                        "$TITLE is uitgevoerd"                  \
+                        "$text"                                 |& $LOGCMD
+        log 'exit 0'
+        exit 0
+    else
+        text="$OPT downloaden is mislukt"
+        log "$text"
+        command_exists canberra-gtk-play &&
+            canberra-gtk-play --id=suspend-error |& $LOGCMD
+        command_exists notify-send &&
+            notify-send --urgency=normal        \
+                        --icon=error            \
+                        "$TITLE is afgebroken"  \
+                        "$text"                 |& $LOGCMD
+        log "exit $E_DOWNLOAD_FAILED"
+        exit $E_DOWNLOAD_FAILED
+    fi
+
+    return 0
+}
+
+#############################################################################
+# Hoofdlijn                                                                 #
+#############################################################################
+
+# init_script
+{
+    controleer_invoer "$@"
+    controleer_gebruiker $SCRIPT_NEEDS_SUDO "$@"
+    toon_invoer
+}
+
+# verwerk
+{
+    toon_gestart --quiet
+    verwerk_invoer
+    toon_gestopt --quiet
+}
+
+# afsl_script
+{
+    toon_afsluiten
+    exit 0
+}
+
+# Einde script.

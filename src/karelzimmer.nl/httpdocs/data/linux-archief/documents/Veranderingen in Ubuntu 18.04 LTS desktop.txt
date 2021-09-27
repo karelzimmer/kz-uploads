@@ -1,0 +1,83 @@
+Veranderingen (verbeteringen) in Ubuntu 18.04 LTS desktp t.o.v. 16.04 LTS
+-------------------------------------------------------------------------
+
+GEWIJZIGD:
+Ubuntu Desktop alleen 64-bit beeldbestanden (.iso), upgrade vanaf 17.04
+    32-bit is wel mogelijk, of gebruik X/Lubuntu Desktop 32-bit
+Ubuntu Dock i.p. Unity Starter
+Ubuntu Dock icoontjes bevatten standaard voortgangsindicator en niet-gelezen
+    teller
+GNOME Shell en GNOME3 (3.26) i.p.v. Unity (Bureaubladomgeving)
+GDM i.p.v. LightDM (Beeldebheerder), login-scherm gebruikt nu virtueel
+    terminal nummer 1 i.p.v. 7
+Vensterknoppen weer rechts i.p.v. links
+Swap file i.p.v. swap partitie.
+Instellingen-app heeft een gewijzigd uiterlijk
+Printerinstellingen nu in het Instellingen-app
+Kalender ondersteunt nu terugkerende afspraken en koppeling met bijv. Google
+    of Nextcloud
+LibreOfiice nu versie 5.4
+Rhythmbox muziekspeler gebruikt nu een aangepast (Ubuntu) uiterlijk
+Eenvoudig scannen volgt nu de GNOME-richtlijnen en is nu onderdeel van de
+    kern van GNOME
+Systeem Log is vervagen door Logs
+Bestanden (v/h Nautilus)
+Archief-app
+Gedit (Editor)
+Déjà Dup (Back-up/reservekopieën)
+Linux kernel 4.15
+Firefox 59
+Thunderbird 52
+LibreOffice 6.0
+Netwerkconfiguratie is nu eenvoudiger (gebruikt nu netplan)
+OpenJDK 10 als JRE/JDK, september 2018 OpenJDK 11.
+SMP-protocoal standaard 2.1 of hoger (veilgheid).
+gpg wordt nu geleverd door gnupg2
+Niet langer de optie Versleutel mijn persoonlijke map; aangeraden wordt de
+    optie "full-disk encryption" te gebruiken <==!
+
+NIEUW:
+Snap application formaat
+Driverless printer-installatie
+Dynamische Werkbladen (rechts op het scherm)
+Ubuntu-eigen Dash-to-Dock GNOME-extensie "Ubuntu Dock"
+Ubuntu-eigen App-indicator GNOME-extensie
+Nacht-licht app (warmere kleuren, beter voor de ogen)
+
+VERWIJDERD:
+Unity's HUD, Globale menu's, Geluid-menu, Notify-OSD
+Python 2
+OpenJDK 8
+Ubuntu Desktop 32-bit beeldbestanden (.iso)
+gconf (nu gsettings)
+
+Veranderingen (verbeteringen) in Ubuntu 18.04 LTS desktop t.o.v. 17.10
+----------------------------------------------------------------------
+
+Versie 18.04 is de eerste met de GNOME desktop!
+
+GEWIJZIGD:
+Gekleurde emoji's; v/h alleen zwart/wit, gebruik Ctrl+ voor de invoerkiezer
+Sneller opstarten
+Reductie in CPU-verbruik
+Linux kernel 4.15
+ifupdown gewijzigd naar netplan.io
+ifup gewijzigd naar ip link set $device up
+ifdown gewijzigd naar ip link set $device down
+networkctl is nu beschikbaar; bijvoorbeeld networkctl status en networkctl
+    status $device
+
+NIEUW:
+Computer gaat automatisch suspenden na 20 minuten inactiviteit als op accu
+GNOME 3.28
+Xorg ipv Wayland
+GNOME To Do-app
+Minimale-installatie-optie bij het installeren
+GNOME ondersteuning voor Thunderbolt 3
+Apps worden standaard geïnstalleerd als snaps; bijv. GNOME Calculator
+spice-vdagent id vooraf geïnstalleerd voor betere respons voor Spice-clients
+    zoals de GNOME Boxes app
+
+
+Karel Zimmer, april 2018
+Zie ook hhttps://wiki.ubuntu.com/Releases

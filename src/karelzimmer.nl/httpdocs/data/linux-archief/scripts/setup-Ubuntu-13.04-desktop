@@ -1,0 +1,52 @@
+#############################################################################
+# Bestand: setup-Ubuntu-13.04-desktop                                       #
+# Doel:    Instellingsbestand voor Ubuntu 13.04 desktop.                    #
+# Gebruik: Door script setup.sh, zie setup.sh --help.                       #
+# Optie:   Opdrachtregel kan ook uitgevoerd worden in het terminalvenster.  #
+# Auteur:  Karel Zimmer (http://karelzimmer.nl, info@karelzimmer.nl).       #
+# ------------------------------------------------------------------------- #
+# Dit werk is gelicenseerd onder een                                        #
+# Creative Commons Naamsvermelding-GelijkDelen 3.0 Nederland licentie.      #
+# Bezoek http://creativecommons.org/licenses/by-sa/3.0/nl/ om een kopie te  #
+# zien van de licentie of stuur een brief naar Creative Commons,            #
+# 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.      #
+# ------------------------------------------------------------------------- #
+# Versies:  1.0.0   2013-07-08  Eerste versie.                              #
+#           2.0.0   2013-07-28  Naamgeving bestand gewijzigd.               #
+#############################################################################
+# VERNUM=2.1.0
+# VERDAT=2013-10-04
+
+#---------------------------------------------------------------------------#
+# Instellingen opzoeken.                                                    #
+#---------------------------------------------------------------------------#
+# CLI:
+# gsettings list-schemas
+# gsettings list-keys <schema> [:<path>]
+# gsettings get <schema> [:<path>] <key>
+# GUI:
+# dconf-editor
+
+#---------------------------------------------------------------------------#
+# Gebruikersinstellingen wijzigen.                                          #
+#---------------------------------------------------------------------------#
+# Activeer enkelklik om te openen.
+# Aanpassen via starter Bestanden > Bestanden > Voorkeuren > tab Gedrag.
+gsettings set org.gnome.nautilus.preferences click-policy single
+
+# Schakel de schermbeveiliging uit.
+# Aanpassen via Systeeminstellingen > Helderheid en vergrendelen.
+gsettings set org.gnome.desktop.screensaver lock-enabled false
+
+# Sluit internetzoekresultaten uit.
+# Aanpassen via Systeeminstellingen > Privacy > tab Zoekresultaten.
+gsettings set com.canonical.Unity.Lenses remote-content-search none
+
+# Schakel werkbladwisselaar in.
+# Aanpassen via Systeeminstellingen > Uiterlijk > tab Gedrag.
+gsettings set org.compiz.core:/org/compiz/profiles/unity/plugins/core/ hsize\
+ 2
+gsettings set org.compiz.core:/org/compiz/profiles/unity/plugins/core/ vsize\
+ 2
+
+# Instellingsbestand eindigt hier.

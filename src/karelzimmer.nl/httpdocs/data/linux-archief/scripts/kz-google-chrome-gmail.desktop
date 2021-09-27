@@ -1,0 +1,26 @@
+# ##############################################################################
+# Bureaublad-configuratiebestand voor Gmail via Google Chrome.
+#
+# Geschreven door Karel Zimmer <info@karelzimmer.nl>.
+#
+# Auteursrecht © 2020 Karel Zimmer.
+# GNU Algemene Publieke Licentie v3 <https://www.gnu.org/licenses/gpl.html>.
+# ##############################################################################
+# REL_NUM=02.00.09
+# REL_DAT=2020-09-11
+# REL_MSG='Keywords toegevoegd'
+
+[Desktop Entry]
+Type=Application
+Name=Gmail
+Name[nl]=Gmail
+GenericName=Mail progam
+GenericName[nl]=Mailprogamma
+Comment=Start Gmail with Google Chrome
+Comment[nl]=Start Gmail met Google Chrome
+Keywords=e-mail;email;browser;web;internet;
+Keywords[nl]=e-mail;email;browser;web;internet;
+Exec=google-chrome 'https://mail.google.com/mail/u/0/#inbox'
+Icon=/usr/share/pixmaps/kz-google-chrome-gmail.png
+
+# EOF

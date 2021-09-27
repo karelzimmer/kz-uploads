@@ -1,0 +1,19 @@
+Veranderingen (verbeteringen) in Ubuntu Ubuntu 12.10 t.o.v. 12.04 LTS
+Zie ook http://www.ubuntu.com/getubuntu/releasenotes/
+
+Mogelijkheid tot gebruik van LVM tijdens install
+Mogelijkheid tot gebruik van schijfencryptie tijdens install
+1 Desktop ISO image, te gebruiken als DVD/USB
+        (vervallen zijn Alternate- en vorige DVD-versie, Ubuntu-server blijft CD)
+1 Unity (GPU of CPU)
+Update Manager is hernoemd naar Software Updater
+Unity heeft nu dash previews en coverflow view
+Ubuntu desktop migreert van Python 2 naar Python 3
+Bijgewerkte X.org
+Firefox heeft DuckDuckGo als zoekmachine-optie (https!)
+Web apps
+Online search
+Dash previews
+Shopping Lens (amazon.com)
+
+Karel Zimmer, oktober 2012

@@ -1,0 +1,62 @@
+Veranderingen (verbeteringen) in Ubuntu Ubuntu 16.04 LTS desktp t.o.v. 14.04 LTS desktop
+Zie ook hhttps://wiki.ubuntu.com/Releases
+
+GEWIJZIGD:
+Opstarten met systemd i.p.v. SysV init en Upstart
+Procesbeheer met systemd i.p.v. Upstart
+Gewijzigd Plymouth opstartscherm
+
+Eye of GNOME 3.18 (Afbeeldingsviewer)
+Firefox 45.0.1
+GNOME Terminal 3.18
+LibreOffice 5
+Linux kernel 4.4.6 LTS
+Python 3.5
+Rhythmbox 3.3.1 (Mediaspeler)
+Shotwell 0.22 (Fotobeheerder)
+Thunderbird 38.6
+Totem 3.18 (Mediaspeler)
+Unity 7.4
+LXD 2.0 (Linux container Daemon, gebaseerd op LXC; Linux Containers)
+
+Optie om Menu's altijd te tonen
+Formatteren verwijderbare media via rechtsklikken op de starter
+Sessie-starters toegevoegd aan de Snelzoeker (Logout, Reboot, Shutdown)
+Verbeterde HiDPI-ondersteuning
+Apps tonen starter tijdens het laden
+Nieuw icon-pack
+Opstarteschijf aanmaken (USB Creator) bug-fixes
+Bestanden heeft andere manier om te scrollen (dunnere lijn rechts, die dik
+    wordt als je met je muis erover gaat).
+Ubuntu softwarecentrum vervangen door Ubuntu Software ("GNOME Software")
+Met geluidmenu microfoon input volume regelen
+Internetzoekresultaten in zoekresultaat standaard uitgezet
+Verbeterde draadloos netwerk-functietoetsen en audioplug-detectie
+
+Update van de firmware (bijv. BIOS/EFI) via GNOME software (Fwupd, v/a kernel 4.2)
+Verplaatsen van de Launcher van links naar beneden via
+    - gsettings set com.canonical.Unity.Launcher launcher-position Bottom (standaard is Left)
+    - Unity Tweak Tool
+
+Installeren van software kan nu ook met 'sudo apt install' (i.p.v. 'sudo apt-get install')
+Integratie Google Drive in Nautilus (via GNOME 3.18/gnome-control-center)
+
+NIEUW:
+GNOME Software
+GNOME Calender (Bureablad kalender app)
+Cheese (Foto maken)
+Ook voor IBM LinuxONE and z Systems mainframe (s390x architectuur)
+ZFS (on-Linux volume-manager en bestandssysteem)
+Snappy Ubuntu Core (maken met Snapcraft 2.7), een relatief nieuw verpakkingsformaat
+    (lijkt op containers als Docker en LXD, maar dan kleiner)
+    voor apps en afhankelijkheden naast het deb verpakkingssysteem, met name voor
+    IoT (Internet of Things) én Ubuntu 16.04 LTS
+    installeren: sudo snap install <package.snap>
+    uitvoeren: <app>.<command>, bijvoorbeeld youtube-dl.run
+
+VERWIJDERD:
+Brasero (Brandprogramma)
+Emphathy (Chatprogramma)
+Ubuntu Softwarecentrum (vervangen)
+
+Karel Zimmer, april 2016

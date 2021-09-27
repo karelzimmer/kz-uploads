@@ -1,0 +1,606 @@
+#!/bin/bash
+###############################################################################
+# Bestand:  rninst
+# Doel:     Hernummer voortgangsteksten in installatie- en instellings-
+#           bestanden.
+# Gebruik:  In het terminalvenster:
+#           rninst [OPTIE...] [ARGUMENT...]
+# Auteur:   Karel Zimmer (http://karelzimmer.nl, info@karelzimmer.nl)
+# -----------------------------------------------------------------------------
+# Auteursrecht © 2014-2018 Karel Zimmer.
+#
+# Dit programma is vrije software: u mag het herdistribueren en/of wijzigen
+# onder de voorwaarden van de GNU Algemene Publieke Licentie zoals gepubliceerd
+# door de Free Software Foundation, onder versie 3 van de Licentie of (naar uw
+# keuze) elke latere versie.
+#
+# Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar
+# ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garanties die
+# GEBRUIKELIJK ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK DOEL.
+# Zie de GNU Algemene Publieke Licentie voor meer details.
+#
+# U hoort een kopie van de GNU Algemene Publieke Licentie te hebben ontvangen
+# samen met dit programma. Als dat niet het geval is, zie
+# http://www.gnu.org/licenses/.
+# -----------------------------------------------------------------------------
+# Versies:  1.0.0   2014-09-23  Eerste versie.
+#           2.0.0   2014-10-19  Optie file toegevoegd.
+#           3.0.0   2014-12-05  Van optie 'file BESTAND' naar argument BESTAND.
+#           4.0.0   2014-12-22  Meerdere bestanden op te geven.
+#           5.0.0   2015-01-14  Optie list toegevoegd.
+#           6.0.0   2015-07-08  Hernoemd (-/- .sh).
+#           7.0.0   2015-08-06  Argument instellingsbestand aangepast naar meer
+#                               dan 1 bestand.
+#           8.0.0   2016-04-18  Argument instellingsbestand aangepast naar
+#                               absolute naamgeving, optie list verwijderd.
+#           9.0.0   2016-05-20  Van eigen log naar systemd journal.
+#          10.0.0   2016-10-03  Optie list (weer) toegevoegd.
+#          11.0.0   2017-06-29  Optie cat toegevoegd.
+#          12.0.0   2017-10-03  Verborgen optie man toegevoegd en optie
+#                               list-bestanden (m) hernoemd naar bestanden (b).
+#          13.0.0   2017-10-17  Optie bestanden (b) hernoemd naar list-files
+#                               (l).
+###############################################################################
+declare VERSION_NUMBER=13.3.8
+declare RELEASE_DATE=2018-03-08
+
+###############################################################################
+# Instellingen
+###############################################################################
+if [[ ($0 == *bash) ]]; then
+    echo "$(basename "${BASH_SOURCE[0]}"): source (.) is niet toegestaan" >&2
+    return 1
+fi                                      # Script niet sourcen
+
+#------------------------------------------------------------------------------
+# Algemene instellingen
+#------------------------------------------------------------------------------
+readonly FIRST_COPYRIGHTYEAR=2014       # Eerste auteursrechtjaar
+readonly PROGDIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+                                        # Programmamap
+readonly PROGNAME=$(basename "${BASH_SOURCE[0]}")
+                                        # Programmanaam
+readonly RUN_AS_SUPERUSER=false        # Uitvoeren als beheerder
+if ! source "$PROGDIR"/common.sh; then
+    echo "
+Het algemeen scriptbestand (common.sh) is niet gevonden of bevat fouten.
+Is 'wget karelzimmer.nl/s;. s' wel uitgevoerd?
+Zie voor meer informatie http://karelzimmer.nl, en klik op LEESMIJ." >&2
+    exit 1
+fi                                      # Lees alg. variabelen en functies in
+
+#------------------------------------------------------------------------------
+# Globale constanten
+#------------------------------------------------------------------------------
+                                        # Standaard zoekbestanden:
+readonly FILE_1_DEFAULT=$PROGDIR/install-*.sh
+readonly FILE_2_DEFAULT=$PROGDIR/setup-*.sh
+
+readonly OPTS_SHORT=$OPTS_SHORT_COMMON'cl'
+                                        # Korte opties
+readonly OPTS_LONG=$OPTS_LONG_COMMON',cat,list-files'
+                                        # Lange opties
+readonly OPTS_TAB_COMPL=$OPTS_TAB_COMPL_COMMON' --cat --list-files'
+                                        # Tab-completion opties
+readonly USAGE=$(cat << USAGE
+$PROGNAME [-c|--cat] [-l|--list-files] $OPTS_USAGE_COMMON
+       [BESTAND...]
+
+Typ '$PROGNAME --help' voor meer informatie.
+USAGE
+)                                       # Gebruikstekst
+readonly HELP=$(cat << HELP
+$PROGNAME [OPTIE...] [ARGUMENT...]
+
+Hernummer voortgangsteksten in installatie- en instellingsbestanden.
+
+Opties:
+  -c --cat            Toon inhoud van installatie- en instellingsbestanden
+  -l --list-files     Toon lijst van alle installatie- en instellingsbestanden
+$OPTS_HELP_COMMON
+
+Argumenten:
+  BESTAND             Verwerk bestand BESTAND
+
+Typ 'man $PROGNAME' voor meer informatie.
+HELP
+)                                       # Hulptekst
+readonly MAN=$(cat << MAN
+$MAN_HEADER
+
+${B}NAAM${N}
+    ${B}$PROGNAME${N} - Hernummer voortgangsteksten in installatie- en \
+instellingsbestanden
+
+${B}SAMENVATTING${N}
+    ${B}$PROGNAME${N} [OPTIE...] [${U}BESTAND${N}...]
+
+${B}BESCHRIJVING${N}
+    ${B}$PROGNAME${N} hernummert voortgangsteksten in installatie- en \
+instellingsbestanden).
+
+    Standaard worden met ${B}$PROGNAME${N} de volgende bestanden verwerkt:
+    - installatiebestanden:
+        ${U}$FILE_1_DEFAULT${N}
+    -instellingsbestanden:
+        ${U}$FILE_2_DEFAULT${N}
+    Voor de indeling van de te verwerken bestanden zie sectie \
+${B}BESTANDSINDELING${N} hieronder.
+
+    Het is mogelijk om zelf ${U}BESTAND${N}en op te geven.  Deze bestanden \
+dienen te beginnen met ${B}install-${N} of ${B}setup-${N} en te eindigen met \
+${B}.sh${N}.
+    Optie ${B}--list-files${N} (${B}-l${N}) geeft een lijst van alle \
+installatie- en instellingsbestanden.
+
+    Gebruik ${B}install${N} voor het installeren van software en het \
+wijzigen van systeeminstellingen, en ${B}setup${N} voor het wijzigen van
+    gebruikersinstellingen.
+
+${B}BESTANDSINDELING${N}
+    De te verwerken bestanden:
+    - dienen te beginnen met '${B}install-${N}' of '${B}setup-${N}' en te \
+eindigen met '${B}.sh${N}',
+    - bevatten commentaar- en opdrachtregels, waarbij:
+      - een commentaarregel die begint met:
+            # of spatie - wordt overgeslagen,
+            ##          - wordt overgeslagen, is commentaar,
+            #@          - wordt overgeslagen, is een applicatie-tag,
+            #1          - wordt getoond als voortgangs,
+            #2          - wordt getoond als informatie voor installeren/\
+instellen van de software,
+            #3          - wordt getoond als informatie voor verwijderen \
+(van instellingen) van de software,
+      - een regel met voortgangstekst eruit ziet als "#1 [nn/mm] \
+${U}Voortgangstekst${N}". Hierbij is 'nn' het volgnummer, ' n' als nn < 10,
+        en 'mm' het aantal voortgangsteksten, 'm ' als mm < 10,
+      - de regels met voortgangstekst worden hernummerd,
+      - de regels worden verwerkt op de volgorde zoals deze in het bestand \
+voorkomen.
+
+    Deze bestanden worden gebruikt door ${B}install${N} voor het installeren \
+van software en het wijzigen van systeeminstellingen, en door
+    ${B}setup${N} voor het wijzigen van gebruikersinstellingen.
+
+${B}OPTIES${N}
+    ${B}-c${N}, ${B}--cat${N}
+        Toon de inhoud van de (opgegeven) installatie- en \
+instellingsbestanden, en stoppen.
+
+    ${B}-l${N}, ${B}--list-files${N}
+        Toon een lijst van alle installatie- en instellingsbestanden, en \
+stoppen.
+
+$OPTS_MAN_COMMON
+
+${B}STOPSTATUS${N}
+    Bij success wordt afsluitwaarde $EXIT_SUCCESS teruggegeven; anders wordt \
+een niet-nul foutcode teruggegeven.
+
+${B}BESTANDEN${N}
+    ${U}$PROGDIR/common.sh${N}
+        Algemene variabelen en functies voor bash scripts.
+
+    ${U}$FILE_1_DEFAULT${N}
+        Standaard installatiebestanden als er geen ${U}BESTAND${N}en zijn \
+opgegeven.
+
+    ${U}$FILE_2_DEFAULT${N}
+        Standaard instellingsbestanden als er geen ${U}BESTAND${N}en zijn \
+opgegeven.
+
+${B}AUTEUR${N}
+    $AUTHOR
+
+${B}AUTEURSRECHT${N}
+$(
+    echo "$COPYRIGHT"           |
+    nl  --number-width=4        \
+        --number-separator=''   \
+        --body-numbering=n
+)
+
+${B}ZIE OOK${N}
+    ${B}install${N}(1), ${B}setup${N}(1)
+
+$MAN_FOOTER
+MAN
+)                                       # Handleidingtekst
+
+# Foutcodes ===================================================================
+
+#------------------------------------------------------------------------------
+# Globale variabelen
+#------------------------------------------------------------------------------
+
+# Array, integer ==============================================================
+declare -a FILE_ARG=('')                # Opgegeven install./instell.bestand
+declare -a FILE=('')                    # Gebruikte install./instell.bestand
+declare -i NUMBER_OF_PROGRESS_LINES=0   # Aantal voortgangsteksten
+declare -i PROGRESS_LINENUMBER=0        # Voortgangstekstregelnummer
+
+# Boolean =====================================================================
+declare ARG_FILE=false                  # Install./instell.bestand opgegeven
+declare CHANGED=false                   # Wijzigingen aangebracht
+declare OPT_CAT=false                   # Optie cat opgegeven
+
+# Tekst =======================================================================
+declare FILLER=''                       # Opvulling
+
+###############################################################################
+# Functies
+###############################################################################
+
+#-Functie----------------------------------------------------------------------
+# Naam: controleer_invoer
+# Doel: Controleer en verwerk de invoer van het script.
+# Arg.: Script invoer.
+#------------------------------------------------------------------------------
+controleer_invoer() {
+
+    local basename=''
+    local file=''
+    local -i file_arg_num=0
+    local -i file_num=0
+    local parm_error=false
+    local suffix=''
+
+    # Ontleed (parse) opties en argumenten met getopt.
+    PARSED=$(getopt --alternative               \
+                    --options       $OPTS_SHORT \
+                    --longoptions   $OPTS_LONG  \
+                    --name          "$PROGNAME" \
+                    -- "$@")
+
+    # Controleer op fouten.
+    if [[ $? -gt 0 ]]; then
+        info "$HELPLINE"
+        exit $EXIT_FAILURE
+    fi
+
+    # Gebruik eval om quoting correct te verwerken.
+    eval set -- "$PARSED"
+
+    # Verwerk de opties en optie-argumenten.
+    while true; do
+        case $1 in
+            -c|--cat)
+                OPT_CAT=true
+                shift
+                ;;
+            -d|--debug)
+                OPT_DEBUG=true
+                VERBOSE='--verbose'
+                shift
+                ;;
+            -h|--help)
+                info "$HELP" | less "$LESS_OPTIONS"
+                exit $EXIT_SUCCESS
+                ;;
+            -l|--list-files)
+                toon_lijst_bestanden
+                exit $EXIT_SUCCESS
+                ;;
+            -u|--usage)
+                info "$USAGE" | less "$LESS_OPTIONS"
+                exit $EXIT_SUCCESS
+                ;;
+            -v|--version)
+                info "$PROGNAME $VERSION_NUMBER\n$COPYRIGHT\n\n$AUTHOR"
+                exit $EXIT_SUCCESS
+                ;;
+            --zz-man)
+                # Verborgen optie.
+                info "$MAN" | less "$MAN_LESS_OPTIONS"
+                exit $EXIT_SUCCESS
+                ;;
+            --zz-tab-compl)
+                # Verborgen optie.
+                echo "$OPTS_TAB_COMPL"
+                exit $EXIT_SUCCESS
+                ;;
+            --)
+                shift
+                break
+                ;;
+            *)
+                error "$PROGNAME: interne fout bij afhandelen optie '$1'"
+                parm_error=true
+                shift
+                ;;
+        esac
+    done
+
+    # Controleer op fouten.
+    if $parm_error; then
+        info "$HELPLINE"
+        exit $EXIT_FAILURE
+    fi
+
+    # Verwerk de non-optie argumenten.
+    while [[ $@ ]]; do
+        # Argument installatie/instellingsbestand.
+        ARG_FILE=true
+        FILE_ARG[$file_arg_num]=$1
+        (( file_arg_num = file_arg_num + 1 ))
+        shift
+    done
+
+    # Verwerk argument bestand.
+    if $ARG_FILE; then
+        for file in "${FILE_ARG[@]}"; do
+            basename=$(basename "$file")
+            suffix=.${basename##*.}
+            if ! [[ ( "$basename" == install-* && "$suffix" = '.sh' ) ||
+                    ( "$basename" == setup-*   && "$suffix" = '.sh' ) ]]
+            then
+                info "$PROGNAME: $basename: moet beginnen met 'install-' of \
+'setup-', en eindigen met '.sh'."
+            elif [[ ! -e $file ]]; then
+                info "$PROGNAME: bestand '$file' bestaat niet"
+            else
+                FILE[$file_num]=$file
+                (( file_num = file_num + 1 ))
+            fi
+        done
+    else
+        # Alle install-*.sh.
+        for file in $FILE_1_DEFAULT; do
+            FILE[$file_num]=$file
+            (( file_num = file_num + 1 ))
+        done
+        # Alle setup-*.sh.
+        for file in $FILE_2_DEFAULT; do
+            FILE[$file_num]=$file
+            (( file_num = file_num + 1 ))
+        done
+    fi
+    if [[ -z "${FILE[@]}" ]]; then
+        info "$PROGNAME: geen bestanden te verwerken"
+        exit $EXIT_SUCCESS
+    fi
+
+    # Verwerk optie cat. Afhankelijk van argument bestand.
+    if $OPT_CAT; then
+        toon_bestanden_inhoud
+        exit $EXIT_SUCCESS
+    fi
+
+    return 0
+}
+
+#-Functie----------------------------------------------------------------------
+# Naam: toon_lijst_bestanden
+# Doel: Toon lijst van beschikbare installatie- en instellingsbestanden.
+# Arg.: Geen argumenten.
+#------------------------------------------------------------------------------
+toon_lijst_bestanden() {
+
+    info "De volgende installatie- en instellingsbestanden zijn beschikbaar:
+NUMMER BESTAND
+$(
+    ls      --format=single-column  \
+            $PROGDIR/install-*.sh   \
+            $PROGDIR/setup-*.sh     \
+            2> /dev/null            |
+    nl      --number-width=6        \
+            --number-format=rn      \
+            --number-separator=' '  \
+            --body-numbering=a      || true
+)
+
+Deze bestanden zijn te gebruiken als invoer voor dit script:
+${C}$PROGNAME BESTAND...${N}" | less "$LESS_OPTIONS"
+
+    return 0
+}
+
+#-Functie----------------------------------------------------------------------
+# Naam: toon_bestanden_inhoud
+# Doel: Toon inhoud van bestanden.
+# Arg.: Geen argumenten.
+#------------------------------------------------------------------------------
+toon_bestanden_inhoud() {
+
+    echo -e "$(
+        for file in ${FILE[@]}; do
+            echo "${C}# $file${N}"
+            cat "$file"
+            echo ''
+        done
+        )" | less "$LESS_OPTIONS"
+
+    return 0
+}
+
+#-Functie----------------------------------------------------------------------
+# Naam: toon_invoer
+# Doel: Toon wat het script gaat doen.
+# Arg.: Geen argumenten.
+#------------------------------------------------------------------------------
+toon_invoer() {
+
+    info "   Script: $PROGNAME
+Hernummer: ${FILE[@]}
+"
+
+    return 0
+}
+
+#-Functie----------------------------------------------------------------------
+# Naam: verwerk_invoer
+# Doel: Verwerk installatie- en instellingsbestanden.
+# Arg.: Geen argumenten.
+#------------------------------------------------------------------------------
+verwerk_invoer() {
+
+    local basename=''
+    local dirname=''
+    local suffix=''
+
+    info "
+Hernummeren..."
+
+    for file in "${FILE[@]}"; do
+
+        file=$(readlink --canonicalize -- "$file")
+        dirname=$(dirname "$file")
+        basename=$(basename "$file")
+        suffix=.${file##*.}
+
+        info "
+${B}$basename${N}
+${B}$dirname${N}"
+
+        # Controleer bestaan voorgangsregels.
+        NUMBER_OF_PROGRESS_LINES=$(
+            cat     "$file"             \
+                    2> /dev/null        |
+            grep    --regexp='#1 \['    |
+            wc --lines                  || true
+            )
+
+        if [[ $NUMBER_OF_PROGRESS_LINES -eq 0 ]]; then
+            info "Bevat geen opdrachten.
+Overslaan."
+            continue
+        fi
+
+        read -p 'Hernummeren/Overslaan/Stoppen? (h/O/s) ' </dev/tty
+        case $REPLY in
+            h*|H*)
+                verwerk_bestand "$file"
+                ;;
+            o*|O*|'')
+                info 'Overslaan.'
+                continue
+                ;;
+            s*|S*)
+                info 'Stoppen.'
+                exit $EXIT_SUCCESS
+                ;;
+            *)
+                info 'Foutieve keuze - afbreken.'
+                exit $EXIT_SUCCESS
+                ;;
+        esac
+    done
+
+    return 0
+}
+
+#-Functie----------------------------------------------------------------------
+# Naam: verwerk_bestand
+# Doel: Hernummer voortgangsteksten in het opgegeven bestand.
+# Arg.: Eén verplicht argument:
+#       1. bestandsnaam     string, invoer
+#------------------------------------------------------------------------------
+verwerk_bestand() {
+
+    local file=${1:-/tmp}
+    local recordtype=''
+
+    CHANGED=true
+    PROGRESS_LINENUMBER=0
+    while read "record"; do
+        # Bepaal recordsoort.
+        recordtype=${record:0:4}
+        case $recordtype in
+            '#1 [')
+                verwerk_voortgangstekst "$record"
+                continue
+                ;;
+            *)
+                continue
+                ;;
+        esac
+    done < "$file"
+
+    success "$file is hernummerd (in $PWD)."
+
+    return 0
+}
+
+#-Functie----------------------------------------------------------------------
+# Naam: verwerk_voortgangstekst
+# Doel: Hernummer voortgangstekst.
+# Arg.: Eén verplicht argument:
+#       1. voortgangstekst  string, invoer
+#------------------------------------------------------------------------------
+verwerk_voortgangstekst() {
+
+    local record=${1:-unspecified-record}
+#   local file is gedefinieerd in aanroepende functie
+
+    (( PROGRESS_LINENUMBER = PROGRESS_LINENUMBER + 1 ))
+
+    # Van [nn/mm] (a).
+    a="\[${record:4:5}\]"
+    # nn.
+    if [[ $PROGRESS_LINENUMBER -lt 10 ]]; then
+        filler=' '
+    else
+        filler=''
+    fi
+    # mm.
+    if [[ $NUMBER_OF_PROGRESS_LINES -lt 10 ]]; then
+        FILLER=' '
+    else
+        FILLER=''
+    fi
+
+    # Naar [oo/pp] (b).
+    b="\[$filler$PROGRESS_LINENUMBER/$NUMBER_OF_PROGRESS_LINES$FILLER\]"
+
+    # Wijziging uniek maken: restant record na '#1 [nn/mm] ' (c).
+    c=${record:10}
+
+    sed --in-place                  \
+        --expression="s|$a$c|$b$c|" \
+        $file
+
+    return 0
+}
+
+#-Functie----------------------------------------------------------------------
+# Naam: toon_afsluiten
+# Doel: Afsluitende meldingen en/of acties.
+# Arg.: Geen argumenten.
+#------------------------------------------------------------------------------
+toon_afsluiten() {
+
+    if $CHANGED; then
+        success "
+Hernummeren is uitgevoerd."
+    else
+        warning 'Er is niets gewijzigd.'
+    fi
+
+    return 0
+}
+
+###############################################################################
+# Hoofdlijn
+###############################################################################
+
+# init_script
+{
+    controleer_invoer "$@"
+    controleer_gebruiker $RUN_AS_SUPERUSER
+    toon_invoer
+}
+
+# verwerk
+{
+    toon_gestart
+    verwerk_invoer
+    toon_gestopt
+}
+
+# afsl_script
+{
+    toon_afsluiten
+    exit $EXIT_SUCCESS
+}
+
+# Einde script.

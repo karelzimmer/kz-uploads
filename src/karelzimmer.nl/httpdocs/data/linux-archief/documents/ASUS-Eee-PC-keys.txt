@@ -1,0 +1,27 @@
+Bestand: ASUS-Eee-PC-keys.txt
+Doel:    tekstbestand met sneltoetsen voor de ASUS Eee PC
+Auteur:  Karel Zimmer (http://karelzimmer.nl, info@karelzimmer.nl)
+
+
+[Alt]+[F2]  .  .  .  . . . Boot: Flash BIOS v/a USB stick FAT16 met bijv. 900.ROM
+
+[Alt]+venster verslepen  . Knoppen zichtbaar maken
+
+[Alt]+[F1] . . . . . . . . GNOME Toepassingen menu
+[Alt]+[F2] . . . . . . . . GNOME Toepassing uitvoeren
+
+
+Afkortingen gebruikt in het kader van netbooks/subnotebooks zoals de ASUS Eee PC:
+lpia   = Low Power on Intel Architecture
+UNR    = Ubuntu Netbook Remix
+UME    = Ubuntu Mobile and Embedded
+PPA    = Personal Package Archives (Launchpad) 
+NBR    = NetBook Remix
+UMPC   = Ultra Mobile Personal Computer
+MID    = Mobile Internet Devices
+Moblin = Mobile Linux Internet Project
+
+
+
+Dit werk is gelicenseerd onder een
+Creative Commons Naamsvermelding-GelijkDelen 3.0 Nederland licentie.

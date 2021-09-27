@@ -1,0 +1,26 @@
+# ##############################################################################
+# Bureaublad-configuratiebestand voor kzsetup --info.
+#
+# Geschreven door Karel Zimmer <info@karelzimmer.nl>.
+#
+# Auteursrecht © 2017-2020 Karel Zimmer.
+# GNU Algemene Publieke Licentie v3 <https://www.gnu.org/licenses/gpl.html>.
+# ##############################################################################
+# REL_NUM=03.00.09
+# REL_DAT=2020-09-11
+# REL_MSG='Keywords toegevoegd'
+
+[Desktop Entry]
+Type=Application
+Name=Apps set info
+Name[nl]=Apps instellen info
+GenericName=Setup progam
+GenericName[nl]=Instelprogramma
+Comment=Show additional instructions after setting up the apps
+Comment[nl]=Toon aanvullende instructies na het instellen van de apps
+Keywords=kzsetup;info;
+Keywords[nl]=kzsetup;informatie;
+Exec=/usr/bin/kzsetup --info --gui
+Icon=/usr/share/pixmaps/kzsetup-info.svg
+
+# EOF

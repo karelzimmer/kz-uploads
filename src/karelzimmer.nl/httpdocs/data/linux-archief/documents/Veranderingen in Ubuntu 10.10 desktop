@@ -1,0 +1,37 @@
+Veranderingen (verbeteringen) in Ubuntu 10.10 t.o.v. Ubuntu 10.04 LTS
+Zie ook http://www.ubuntu.com/getubuntu/releasenotes/
+
+UDE
+---
+- Nautilus Elementary; F7=Terminal, F4=Clutterview
+- Betere installer (duidelijker, sneller, meer takern parallel)
+- Evolution werkt sneller
+- Shotwell (i.p.v. F-Spot) als fotobeheerprogramma
+- Gwibber is verbeterd
+- Geluidsindicator bevat nu ook muziekspeler-niveauregeling
+- Ubuntu softwarecentrum is uitgebreid met "Aanbevolen/Featured" en 
+  "Nieuw in Ubuntu/What's New". Installatiehistorie is toegankelijker.
+- Nieuw ontwerp: schoner en sneller opstarten, nieuwe thema's, nieuwe icons
+  en bureaubladachtergronden.
+- Ubuntu One is beter geïntegreerd, met neiuwe aanmeld- en inlogproces.
+  Snellere bestandssynchronisatie.
+- Nieuwe letterfonts.
+
+USE
+---
+- Cloud computing met meer mogelijkheden.
+
+UNE
+---
+- Nieuwe Unity interface.
+- Evolution Express
+- Shotwell (ipv F-Spot)
+EOF
+
+UNE: Ubuntu Netbook Edition
+UDE: Ubuntu Desktop Edition
+USE: Ubuntu Server Edition
+UDA: Ubuntu Desktop Alternate
+EDU: Edubuntu
+
+Karel Zimmer, oktober 2010

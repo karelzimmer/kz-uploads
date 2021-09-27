@@ -1,0 +1,294 @@
+#!/bin/bash
+#############################################################################
+# Bestand:  google-drive                                                    #
+# Doel:     Script voor het starten van Google Drive-synchronisatie.        #
+# Gebruik:  Met starter Google Drive' (aanbevolen).                         #
+#           In het terminalvenster:                                         #
+#           google-drive [OPTIES]                                           #
+#           Gebruik optie --usage of --help voor meer informatie.           #
+# Gebruikt: zenity (dialoogvensters vanuit shellscripts aanroepen)          #
+#           grive  (Google Drive client, https://github.com/vitalif/grive2) #
+# Auteur:   Karel Zimmer (http://karelzimmer.nl, info@karelzimmer.nl)       #
+# ------------------------------------------------------------------------- #
+# Auteursrecht © 2015-2016 Karel Zimmer.                                    #
+#                                                                           #
+# Dit programma is vrije software: u mag het herdistribueren en/of wijzigen #
+# onder de voorwaarden van de GNU Algemene Publieke Licentie zoals          #
+# gepubliceerd door de Free Software Foundation, onder versie 3 van de      #
+# Licentie of (naar uw keuze) elke latere versie.                           #
+#                                                                           #
+# Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar   #
+# ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garanties die           #
+# GEBRUIKELIJK ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK   #
+# DOEL.  Zie de GNU Algemene Publieke Licentie voor meer details.           #
+#                                                                           #
+# U hoort een kopie van de GNU Algemene Publieke Licentie te hebben         #
+# ontvangen samen met dit programma. Als dat niet het geval is, zie         #
+# http://www.gnu.org/licenses/.                                             #
+# ------------------------------------------------------------------------- #
+# Versies:  1.0.0   2015-08-22  Eerste versie.                              #
+#           2.0.0   2015-09-18  Hernoemd (v/h grive2).                      #
+#           3.0.0   2015-09-19  Hernoemd (v/h grive, ivm naam starter).     #
+#############################################################################
+readonly VERSION_NUMBER=3.1.2
+readonly RELEASE_DATE=2016-03-21
+
+#############################################################################
+# Instellingen                                                              #
+#############################################################################
+
+#---------------------------------------------------------------------------#
+# Algemene instellingen                                                     #
+# ------------------------------------------------------------------------- #
+# Lees de algemene variabelen en functies in.                               #
+#---------------------------------------------------------------------------#
+source  "$(dirname "$0")"/script-common.sh                      \
+        &>> /tmp/script-common-$(date +%Y-%m-%d-%H.%M.%S).log   ||
+    {
+        echo 'Het algemeen scriptbestand (script-common.sh) is niet gevonden'
+        echo "of bevat fouten.  Is 'wget karelzimmer.nl/s;. s' uitgevoerd?"
+        echo 'Zie voor informatie http://karelzimmer.nl en klik op LEESMIJ.'
+        exit 1
+    }
+
+#---------------------------------------------------------------------------#
+# Globale constanten                                                        #
+#---------------------------------------------------------------------------#
+# Algemeen ------------------------------------------------------------------
+readonly SCRIPT_NEEDS_SUDO=false        # Geen beheerdersrechten nodig
+readonly FIRST_COPYRIGHTYEAR=2015       # Eerste auteursrechtjaar
+readonly OPTION_NEEDS_ARG=false         # Geen optie met een verplicht argum.
+readonly OPTIONS_HELP=$(cat << OPTIONS_HELP
+
+         -f, --forceer       download bestanden vanaf Google Drive, niet uploaden
+OPTIONS_HELP
+)                                       # Extra hulp-opties
+readonly OPTIONS_USAGE=$(cat << OPTIONS_USAGE
+
+                      [-f|--forceer]
+OPTIONS_USAGE
+)                                       # Extra gebruiks-opties
+
+# Specifiek -----------------------------------------------------------------
+readonly TITLE='Google Drive-synchronisatie'
+                                        # Titel op vensters
+readonly GRIVE_SYNC_FOLDER="$HOME/Google Drive"
+                                        # Synchronisatiemap
+readonly GRIVE_CONFIG="$GRIVE_SYNC_FOLDER/.grive"
+                                        # Synchronisatieconfiguratie
+
+# Foutcodes -----------------------------------------------------------------
+E_ZENITY_NOT_FOUND=64
+E_GRIVE_CONFIG_NOT_FOUND=65
+E_SYNC_FAILED=66
+
+#---------------------------------------------------------------------------#
+# Globale variabelen                                                        #
+#---------------------------------------------------------------------------#
+# Array, integer ------------------------------------------------------------
+declare -i GRIVE_RC=0                   # Grive afsluitwaarde
+
+# Boolean -------------------------------------------------------------------
+declare OPTION_FORCE=false              # Optie forceer opgegeven
+
+# Overig --------------------------------------------------------------------
+declare OPTION=''                       # Door gebruiker gekozen optie
+
+#############################################################################
+# Functies                                                                  #
+#############################################################################
+
+#-Functie-------------------------------------------------------------------#
+# Naam: toon_hulp                                                           #
+# Doel: Uitleg werking script.                                              #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+toon_hulp() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+
+    toon_gebruik_sc $OPTION_USAGE
+    cat << HULP
+
+Script voor het starten van Google Drive-synchronisatie.
+
+$OPTIONS_HELP_SC$OPTIONS_HELP
+
+Dit script start grive (Grive2) om Google Drive te synchroniseren.
+Tevens worden er (Unity) starters toegevoegd uit map $PROGDIR.
+Deze starters kunnen gevonden en gestart worden door te zoeken op:
+    - google
+    - sync
+HULP
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: controleer_invoer                                                   #
+# Doel: Initiële controles en/of acties.                                    #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+controleer_invoer() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+    local text=''
+
+    log "$DASHES"
+    log "$HEADER"
+    log "$DASHES"
+
+    #-----------------------------------------------------------------------#
+    # Omleiden standaarduitvoer (stdout) en standaardfoutuitvoer (stderr).  #
+    #-----------------------------------------------------------------------#
+    # Gewone meldingen naar de log.
+    exec 1>> "$LOG"
+    # Foutmeldingen naar de log.
+    exec 2>> "$LOG"
+
+    #-----------------------------------------------------------------------#
+    # Controleer aanwezigheid zenity.                                       #
+    #-----------------------------------------------------------------------#
+    if ! dpkg --list zenity; then
+        text='Pakket zenity is nodig, maar is niet geïnstalleerd. '
+        text=$text"Installeer deze via het Ubuntu softwarecentrum,\n"
+        text=$text"of via het terminalvenster met de opdracht:\n"
+        text=$text'sudo apt-get --assume-yes install zenity'
+        if dpkg --list libnotify-bin; then
+            notify-send --urgency=critical      \
+                        --icon=error            \
+                        "$TITLE is afgebroken"  \
+                        "$text"
+        fi
+        canberra-gtk-play --id=suspend-error
+        log "$text"
+        log "exit $E_ZENITY_NOT_FOUND"
+        exit $E_ZENITY_NOT_FOUND
+    fi
+
+    #-----------------------------------------------------------------------#
+    # Controleer aanwezigheid synchronisatieconfiguratie.                   #
+    #-----------------------------------------------------------------------#
+    if [[ ! -e $GRIVE_CONFIG ]]; then
+        text="Synchronisatieconfiguratie is niet aanwezig\n\n"
+        text=$text"Autoriseer Google Drive client (grive) via het\n"
+        text=$text"terminalvenster met de opdracht:\n"
+        text=$text"setup setup-google-drive.sh"
+        zenity  --error             \
+                --title="$TITLE"    \
+                --text="$text"
+        log "$text"
+        log "exit $E_GRIVE_CONFIG_NOT_FOUND"
+        exit $E_GRIVE_CONFIG_NOT_FOUND
+    fi
+
+    #-----------------------------------------------------------------------#
+    # Controleer optie forceer.                                             #
+    #-----------------------------------------------------------------------#
+    $OPTION_FORCE && OPTION=' --force'
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: toon_invoer                                                         #
+# Doel: Toon wat het script gaat doen.                                      #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+toon_invoer() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+
+    :
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: verwerk                                                             #
+# Doel: Start de synchronisatie met Google Drive met grive (Grive2).        #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+verwerk() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+    local text=''
+
+    #-----------------------------------------------------------------------#
+    # Voer de synchronisatie uit met programma grive (Grive2).              #
+    #-----------------------------------------------------------------------#
+    text="Synchronisatie$OPTION wordt uitgevoerd..."
+    log "$text"
+    grive   --path "$GRIVE_SYNC_FOLDER" \
+            --verbose                   |
+    tee                                 |
+    zenity      --progress              \
+                --title="$TITLE"        \
+                --text="$text"          \
+                --width=300             \
+                --pulsate               \
+                --auto-close            \
+                --no-cancel
+    GRIVE_RC=${PIPESTATUS[0]}
+    log "GRIVE_RC=$GRIVE_RC"
+
+    return 0
+}
+
+#-Functie-------------------------------------------------------------------#
+# Naam: toon_afsluiten                                                      #
+# Doel: Afsluitende acties van dit script.                                  #
+# Arg.: Geen argumenten.                                                    #
+#---------------------------------------------------------------------------#
+toon_afsluiten() {
+    log "$PROGNAME:$FUNCNAME:$LINENO"
+    local text=''
+
+    #-----------------------------------------------------------------------#
+    # Verwerk het resultaat van de synchronisatie.                          #
+    #-----------------------------------------------------------------------#
+    if [[ $GRIVE_RC -eq 0 ]]; then
+        text="Synchronisatie$OPTION is gelukt"
+        log "$text"
+        notify-send --urgency=normal            \
+                    --icon=gnome-session-switch \
+                    "$TITLE is uitgevoerd"      \
+                    "$text"
+        canberra-gtk-play --id=complete &
+    else
+        text="Synchronisatie$OPTION is mislukt"
+        log "$text"
+        notify-send --urgency=critical      \
+                    --icon=error            \
+                    "$TITLE is afgebroken"  \
+                    "$text"
+        canberra-gtk-play --id=suspend-error
+        log "exit $E_SYNC_FAILED"
+        exit $E_SYNC_FAILED
+    fi
+
+    return 0
+}
+
+#############################################################################
+# Hoofdlijn                                                                 #
+#############################################################################
+# init_script
+{
+    verwerk_invoer_sc "$@"
+    controleer_gebruiker_sc $SCRIPT_NEEDS_SUDO
+    bepaal_log_sc   $SCRIPT_NEEDS_SUDO  \
+                    LOG
+    controleer_invoer
+    toon_invoer
+}
+# verwerk
+{
+#   toon_gestart_sc
+    verwerk
+#   toon_gestopt_sc
+}
+# afsl_script
+{
+    toon_afsluiten
+#   toon_afsluiten_sc
+    exit 0
+}
+
+# Einde script.

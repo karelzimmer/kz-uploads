@@ -1,0 +1,29 @@
+# ###############################################################################
+# Bestand:  wallpapers.desktop
+# Doel:     Bureaubladbestand voor wallpapers
+# Gebruik:  1. Door een script en/of instellingsbestand (aanbevolen)
+#           2. Door dit bestand te kopiëren naar
+#              ~/.local/share/applications (per-user)
+#              /usr/share/applications   (systemwide)
+# Auteur:   Karel Zimmer (https://karelzimmer.nl, info@karelzimmer.nl)
+# -------------------------------------------------------------------------------
+# Dit werk valt onder een Creative Commons Naamsvermelding-GelijkDelen 4.0
+# Internationaal licentie (CC BY-SA 4.0).
+# Bezoek http://creativecommons.org/licenses/by-sa/4.0/deed.nl om een kopie te
+# zien van de licentie of stuur een brief naar Creative Commons, PO Box 1866,
+# Mountain View, CA 94042, USA.
+# -------------------------------------------------------------------------------
+# Versies:  1.0.0   2016-07-06  Eerste versie
+#           2.0.0   2018-07-28  Gebruik mappen volgens de Linux FHS standaard
+# ###############################################################################
+# VERSION_NUMBER=2.0.2
+# RELEASE_DATE=2018-08-23
+
+[Desktop Entry]
+Name=Wallpapers
+Comment=Voeg werkbladachtergronden toe
+Exec=/usr/local/bin/_sudo wallpapers --gui
+Icon=/usr/share/pixmaps/wallpapers.png
+Type=Application
+
+# Einde bureaubladbestand.
