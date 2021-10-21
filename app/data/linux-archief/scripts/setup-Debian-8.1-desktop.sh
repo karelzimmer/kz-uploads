@@ -43,7 +43,7 @@ gsettings set org.gnome.shell.calendar show-weekdate true
 
 #1 [ 3/9 ] Letterweergave verbeteren (1/2)
 ## Zie: https://wiki.debian.org/Fonts#Subpixel-hinting_and_Font-smoothing
-wget    http://karelzimmer.nl/apps/debian/home.fonts.conf \
+wget    http://karelzimmer.nl/downloads/debian/home.fonts.conf \
         --output-document=/tmp/home.fonts.conf
 #1         Letterweergave verbeteren (2/2)
 cp /tmp/home.fonts.conf $HOME/.fonts.conf

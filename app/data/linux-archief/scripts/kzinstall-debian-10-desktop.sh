@@ -26,8 +26,8 @@ sudo apt-get install --yes gnome-shell-extension-dashtodock
 
 #@icaclient
 #1 Citrix Workspace app voor Linux - Telewerken (Citrix Receiver, ICA Client)
-wget --output-document=/tmp/icaclient-LATEST 'info@karelzimmer.nlapps/icaclient/LATEST'
-wget --output-document=/tmp/icaclient.deb "info@karelzimmer.nlapps/icaclient/icaclient_$(cat /tmp/icaclient-LATEST)_amd64.deb"
+wget --output-document=/tmp/icaclient-LATEST 'info@karelzimmer.nl/downloads/icaclient/LATEST'
+wget --output-document=/tmp/icaclient.deb "info@karelzimmer.nl/downloads/icaclient/icaclient_$(cat /tmp/icaclient-LATEST)_amd64.deb"
 sudo DEBIAN_FRONTEND=noninteractive apt-get install --yes /tmp/icaclient.deb
 sudo ln --symbolic --force /usr/share/ca-certificates/mozilla/* /opt/Citrix/ICAClient/keystore/cacerts
 sudo c_rehash /opt/Citrix/ICAClient/keystore/cacerts

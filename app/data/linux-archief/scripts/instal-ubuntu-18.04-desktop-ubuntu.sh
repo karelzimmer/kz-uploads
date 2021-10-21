@@ -50,8 +50,8 @@ sudo apt-get install --yes gedit gedit-plugins
 
 #@icaclient
 #1 Citrix Workspace app (v/h Citrix Receiver, aka ICA Client) telewerken
-wget --output-document=/tmp/LATEST 'https://karelzimmer.nl/apps/icaclient/LATEST'
-wget --output-document=/tmp/icaclient.deb "https://karelzimmer.nl/apps/icaclient/icaclient_$(cat /tmp/LATEST)_amd64.deb"
+wget --output-document=/tmp/LATEST 'https://karelzimmer.nl/downloads/icaclient/LATEST'
+wget --output-document=/tmp/icaclient.deb "https://karelzimmer.nl/downloads/icaclient/icaclient_$(cat /tmp/LATEST)_amd64.deb"
 echo 'icaclient icaclient/accepteula select true' | sudo debconf-set-selections
 sudo apt-get install --yes /tmp/icaclient.deb
 sudo ln --symbolic --force /usr/share/ca-certificates/mozilla/* /opt/Citrix/ICAClient/keystore/cacerts

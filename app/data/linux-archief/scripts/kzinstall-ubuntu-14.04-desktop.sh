@@ -49,8 +49,8 @@ sudo snap install bitwarden
 #1 icaclient
 #2 Citrix Workspace app installeren
 ## Citrix Receiver, ICA Client
-wget --output-document=/tmp/icaclient-LATEST 'https://karelzimmer.nl/apps/icaclient/LATEST'
-wget --output-document=/tmp/icaclient.deb "https://karelzimmer.nl/apps/icaclient/icaclientWeb_$(cat /tmp/icaclient-LATEST)_amd64.deb"
+wget --output-document=/tmp/icaclient-LATEST 'https://karelzimmer.nl/downloads/icaclient/LATEST'
+wget --output-document=/tmp/icaclient.deb "https://karelzimmer.nl/downloads/icaclient/icaclientWeb_$(cat /tmp/icaclient-LATEST)_amd64.deb"
 ## Optie skip-same-version als installatie hangt en opnieuw wordt gestart.
 sudo DEBIAN_FRONTEND=noninteractive dpkg --install --skip-same-version /tmp/icaclient.deb
 sudo ln --symbolic --force /usr/share/ca-certificates/mozilla/* /opt/Citrix/ICAClient/keystore/cacerts

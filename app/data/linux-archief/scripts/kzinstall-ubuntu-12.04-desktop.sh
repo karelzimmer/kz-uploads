@@ -50,8 +50,8 @@ sudo sed --in-place --expression='s/enabled=1/enabled=0/' /etc/default/apport
 #1 icaclient
 #2 Citrix Workspace app installeren
 ## Citrix Receiver, ICA Client
-wget --output-document=/tmp/icaclient-LATEST 'https://karelzimmer.nl/apps/icaclient/LATEST'
-wget --output-document=/tmp/icaclient.deb "https://karelzimmer.nl/apps/icaclient/icaclientWeb_$(cat /tmp/icaclient-LATEST)_amd64.deb"
+wget --output-document=/tmp/icaclient-LATEST 'https://karelzimmer.nl/downloads/icaclient/LATEST'
+wget --output-document=/tmp/icaclient.deb "https://karelzimmer.nl/downloads/icaclient/icaclientWeb_$(cat /tmp/icaclient-LATEST)_amd64.deb"
 sudo DEBIAN_FRONTEND=noninteractive dpkg --install /tmp/icaclient.deb || sudo apt-get --fix-broken --yes install
 sudo ln --symbolic --force /usr/share/ca-certificates/mozilla/* /opt/Citrix/ICAClient/keystore/cacerts
 sudo c_rehash /opt/Citrix/ICAClient/keystore/cacerts

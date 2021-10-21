@@ -41,13 +41,13 @@ sudo apt-get install --yes gedit gedit-plugins
 #1 [ 3/7 ] Installeer Citrix Receiver - telewerken
 ##================================================
 ## Versienummerbestand downloaden. Inhoud bijvoorbeeld: 13.4.0.10109380
-wget --output-document=/tmp/LATEST http://karelzimmer.nl/downloads/apps/icaclient/LATEST
+wget --output-document=/tmp/LATEST http://karelzimmer.nl/downloads/downloads/icaclient/LATEST
 
 ## Pakket downloaden.
-wget --output-document=/tmp/icaclient_$(cat /tmp/LATEST)_amd64.deb http://karelzimmer.nl/downloads/apps/icaclient/$(cat /tmp/LATEST)/icaclient_$(cat /tmp/LATEST)_amd64.deb
+wget --output-document=/tmp/icaclient_$(cat /tmp/LATEST)_amd64.deb http://karelzimmer.nl/downloads/downloads/icaclient/$(cat /tmp/LATEST)/icaclient_$(cat /tmp/LATEST)_amd64.deb
 
 ## Controlebestand downloaden.
-wget --output-document=/tmp/icaclient_$(cat /tmp/LATEST)_amd64.deb.sha256sum http://karelzimmer.nl/downloads/apps/icaclient/$(cat /tmp/LATEST)/icaclient_$(cat /tmp/LATEST)_amd64.deb.sha256sum
+wget --output-document=/tmp/icaclient_$(cat /tmp/LATEST)_amd64.deb.sha256sum http://karelzimmer.nl/downloads/downloads/icaclient/$(cat /tmp/LATEST)/icaclient_$(cat /tmp/LATEST)_amd64.deb.sha256sum
 
 ## Pakket controleren.
 sha256sum --check /tmp/icaclient_$(cat /tmp/LATEST)_amd64.deb.sha256sum
