@@ -13,7 +13,7 @@
 
 <body>
 
-    <nav class="hdr">
+    <nav id="top" class="hdr">
         <table class="hdr">
             <tbody>
                 <tr>
@@ -34,10 +34,10 @@
         <h3 id="checklists" title="Start hier">Klik op 'Checklist installatie' of op het PDF-logo erachter om te beginnen met de installatie van Linux</h3>
     </header>
 
-    <nav class="topl">
+    <nav id="checklists" class="topl">
         <a class="topr" title="Ga naar onderkant van pagina" href="#bottom">BOTTOM</a>
         <a class="topr">&nbsp;|&nbsp;</a>
-        <a class="topr" title="Ga naar bovenkant van pagina" href="linux.html">TOP</a>
+        <a class="topr" title="Ga naar bovenkant van pagina" href="#top">TOP</a>
         <a class="topr">&nbsp;|&nbsp;</a>
         <a class="topr" title="Ga naar bestanden" href="#bestanden">BESTANDEN</a>
         <a class="topr">&nbsp;|&nbsp;</a>
@@ -71,7 +71,7 @@
 
     <hr>
 
-    <nav class="topl">
+    <nav id="documenten" class="topl">
         <a class="topr" title="Ga naar onderkant van pagina" href="#bottom">BOTTOM</a>
         <a class="topr">&nbsp;|&nbsp;</a>
         <a class="topr" title="Ga naar bovenkant van pagina" href="linux.html">TOP</a>
@@ -91,10 +91,16 @@
         <col class="t3c3">
         <thead>
             <tr>
-                <th title="Documenten (geen Checklist installatie)" colspan=3>Documenten</th>
+                <th title="Documenten" colspan=3>Documenten<code> (git clone https://github.com/karelzimmer/kz-docs.git)</code></th>
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td title="Checklist als OpenDocument Tekst"><a href="../data/linux/documents/Checklist%20installatie%20Ubuntu%2020.04%20desktop.odt">Checklist installatie</a></td>
+                <td class="mid" title="Checklist als PDF"><a class="img" href="../data/linux/pdfs/Checklist%20installatie%20Ubuntu%2020.04%20desktop.pdf">
+                <img src="../data/common/pdf.svg" alt="Als PDF" width=38 height=38></a></td>
+                <td title="Checklist installatie Ubuntu">Checklist voor het installeren van <a title="Naar download Ubuntu" href="http://nl.releases.ubuntu.com/" target="_blank">Ubuntu</a> 20.04 LTS (Focal Fossa) desktop. <a title="Wat is nieuw" href="../data/linux/documents/Veranderingen%20in%20Ubuntu%2020.04%20desktop.txt" target="_blank">What's new</a></td>
+            </tr>
             <tr>
                 <td title="Tekstbestand"><a href="../data/linux/documents/Linux-info.txt">Linux informatie</a></td>
                 <td class="mid" title="Tekstbestand als PDF"><a class="img" href="../data/linux/pdfs/Linux-info.pdf">
@@ -142,14 +148,7 @@
     </table>
     <hr>
 
-    <header id="scripts" >
-        <h3 title="Start hier">Voor het gebruik van 'Pakket kz' zie 'Checklist installatie' hierboven</h3>
-        <h4 title="Ook in Git">Documenten en scripts tevens beschikbaar via:<br>
-        <code>git clone https://github.com/karelzimmer/kz-docs.git<br>
-        git clone https://github.com/karelzimmer/kz-scripts.git</code></h4>
-    </header>
-
-    <nav class="topl">
+    <nav id="scripts" class="topl">
         <a class="topr" title="Ga naar onderkant van pagina" href="#bottom">BOTTOM</a>
         <a class="topr">&nbsp;|&nbsp;</a>
         <a class="topr" title="Ga naar bovenkant van pagina" href="linux.html">TOP</a>
@@ -169,7 +168,7 @@
         <col class="t3c3">
         <thead>
             <tr>
-                <th title="Scripts" colspan=3>Scripts</th>
+                <th title="Scripts" colspan=3>Scripts<code> (git clone https://github.com/karelzimmer/kz-scripts.git)</code></th>
             </tr>
         </thead>
         <tbody>
@@ -177,7 +176,7 @@
                 <td title="Download pakket kz"><a href="../downloads/kz/kz_365_all.deb">Pakket kz</a></td>
                 <td class="mid" title="Download pakket kz"><a class="img" href="../downloads/kz/kz_365_all.deb">               
                 <img src="../data/common/deb.svg" alt="INSTALLEER PAKKET KZ" width=38 height=38></a></td>
-                <td title="Download pakket kz">Alle documenten en scriptbestanden in één Debian-pakket.</td>
+                <td title="Download pakket kz">Alle documenten en scriptbestanden in één Debian-pakket.<br>Voor het gebruik van 'Pakket kz' zie 'Checklist installatie' hierboven.</td>
             </tr>
             <tr>
                 <td title="Script als tekstbestand"><a href="../data/linux/scripts/kz">kz</a></td>
@@ -684,9 +683,9 @@
     <footer>
         <p>© 2010-<script>document.write(new Date().getFullYear())</script> Karel Zimmer.</p>
         <p>Gemaakt met Visual Studio Code<a class="img" title="VS Code" href="https://code.visualstudio.com/">
-        <img src="../data/common/code.png" alt="Visual Studio Code" width=38 height=38></a>editor op een computer met Ubuntu<a class="img" title="Ubuntu" href="https://ubuntu.com/">
-        <img src="../data/common/ubuntu.png" alt="Ubuntu" width=38 height=38></a>GNU<a class="img" title="GNU" href="https://www.gnu.org/">
-        <img src="../data/common/gnu.png" alt="GNU" width=38 height=38></a>Linux<a class="img" title="Tux" href="https://www.linux.org/">
+        <img src="../data/common/code.png" alt="Visual Studio Code" width=38 height=38></a> editor op een computer met Ubuntu<a class="img" title="Ubuntu" href="https://ubuntu.com/">
+        <img src="../data/common/ubuntu.png" alt="Ubuntu" width=38 height=38></a> GNU<a class="img" title="GNU" href="https://www.gnu.org/">
+        <img src="../data/common/gnu.png" alt="GNU" width=38 height=38></a> Linux<a class="img" title="Tux" href="https://www.linux.org/">
         <img src="../data/common/linux.png" alt="Tux" width=38 height=38></a> als besturingssysteem.</p>
         <p>
             <a class="img" title="Valide HTML5" href="https://validator.w3.org/check?uri=http%3A%2F%2Fkarelzimmer.nl%2Fhtml%2Fcontact.html">
