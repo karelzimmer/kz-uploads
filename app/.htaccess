@@ -1,7 +1,9 @@
 AddHandler x-httpd-php73 .php
-# File: .htacces (Hypertext access)
-# Desc: Server-side redirection (server-side rewriting)
-# Auth: Karel Zimmer
+###############################################################################
+# Server-side redirection w/.htacces (Hypertext access).                      #
+#                                                                             #
+# Geschreven door Karel Zimmer <info@karelzimmer.nl>.                         #
+###############################################################################
 RewriteEngine On
 RewriteCond %{HTTP_HOST} ^(www\.karelzimmer\.nl|karelzimmer\.nl)$ [NC]
 RewriteCond %{SERVER_PORT} 80
