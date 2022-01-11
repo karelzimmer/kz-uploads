@@ -8,7 +8,7 @@ maintaining Ubuntu and Debian Linux.
 
 ---
 Basis-bestanden voor site karelzimmer.nl.\
-Deze basis-bestanden zullen worden aangevuld met bestanden uit Git repositories
+Deze basis-bestanden zullen worden aangevuld met bestanden uit Git-repositories
 kz-docs en kz-scripts tijdens het genereren van site karelzimmer.nl door script
 kz-build.
 
