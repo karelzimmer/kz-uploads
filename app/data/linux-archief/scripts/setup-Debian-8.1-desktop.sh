@@ -27,7 +27,7 @@
 #---------------------------------------------------------------------------#
 # Gebruikersinstellingen wijzigen                                           #
 #---------------------------------------------------------------------------#
-#1 [ 1/9 ] Aliassen instellen (1/2)
+#1 [ 1/8 ] Aliassen instellen (1/2)
 sed     --in-place=.setup-algemeen-$(date +%Y-%m-%d-%H.%M.%S)   \
         --expression='s/#alias/alias/g'                         \
         $HOME/.bashrc
@@ -35,20 +35,13 @@ sed     --in-place=.setup-algemeen-$(date +%Y-%m-%d-%H.%M.%S)   \
 ## Effectueren.
 source $HOME/.bashrc
 
-#1 [ 2/9 ] Klokweergave uitbreiden (1/2)
+#1 [ 2/8 ] Klokweergave uitbreiden (1/2)
 ## Aanpassen via ?.
 gsettings set org.gnome.desktop.interface clock-show-date true
 #1         Klokweergave uitbreiden (2/2)
 gsettings set org.gnome.shell.calendar show-weekdate true
 
-#1 [ 3/9 ] Letterweergave verbeteren (1/2)
-## Zie: https://wiki.debian.org/Fonts#Subpixel-hinting_and_Font-smoothing
-wget    http://karelzimmer.nl/downloads/debian/home.fonts.conf \
-        --output-document=/tmp/home.fonts.conf
-#1         Letterweergave verbeteren (2/2)
-cp /tmp/home.fonts.conf $HOME/.fonts.conf
-
-#1 [ 4/9 ] Favoriete programma's in de starter vastzetten
+#1 [ 3/8 ] Favoriete programma's in de starter vastzetten
 ## Aanpassen via rechtsklik in de snelstarter op favoriet-pictogram > 
 ## Aan favorieten toevoegen
 gsettings set org.gnome.shell favorite-apps "[\
@@ -63,25 +56,25 @@ gsettings set org.gnome.shell favorite-apps "[\
 'yelp.desktop'\
 ]"
 
-#1 [ 5/9 ] Werkbladachtergrond instellen
+#1 [ 4/8 ] Werkbladachtergrond instellen
 ## Aanpassen via Instellingen > Achtergrond > Achtergrond (knop).
 gsettings set org.gnome.desktop.background picture-uri \
 'file:///opt/wallpapers/Klaproos.jpg'
 
-#1 [ 6/9 ] Schermbeveiliging uitschakelen
+#1 [ 5/8 ] Schermbeveiliging uitschakelen
 ## Aanpassen via ?.
 gsettings set org.gnome.desktop.screensaver lock-enabled false
 
-#1 [ 7/9 ] Tap(pen) op touchpad is enkel/dubbelklik
+#1 [ 6/8 ] Tap(pen) op touchpad is enkel/dubbelklik
 ## Aanpassen via ?.
 gsettings set org.gnome.nautilus.preferences click-policy 'single'
 
-#1 [ 8/9 ] Enkelklik om te openen activeren
+#1 [ 7/8 ] Enkelklik om te openen activeren
 ## Aanpassen via ?.
 gsettings set org.gnome.settings-daemon.peripherals.touchpad tap-to-click \
 true
 
-#1 [ 9/9 ] Mijn schijf in de cloud - Google Drive
+#1 [ 8/8 ] Mijn schijf in de cloud - Google Drive
 #bash setup-google-drive.sh
 #2         +----------------------------------------------------------------+
 #2         |                        Google Drive                            |
