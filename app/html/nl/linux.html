@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<!--
+###############################################################################
+# Linux page.
+#
+# Written in 2010 by Karel Zimmer <info@karelzimmer.nl>, Creative Commons
+# Public Domain Dedication <http://creativecommons.org/publicdomain/zero/1.0>.
+###############################################################################
+-->
+
+<head>
+    <title>Linux - Karel Zimmer - Linux specialist</title>
+    <link rel="icon" type="image/x-icon" href="../data/common/favicon.ico">
+    <meta charset="utf-8">
+    <meta name="author" content="Karel Zimmer" >
+    <meta name="keywords" content="Linux,Ubuntu,Debian,Installatie,Checklists,scripts,IaC,CI/CD">
+    <meta name="description" content="Linux documenten en scripts">
+    <link rel="stylesheet" href="../../css/stijlblad.css">
+</head>
+
+<body>
+    <nav class="topl">
+        <a class="topr" title="Nederlands" href="../../html/nl/linux.html">NL</a>
+        <a class="topr">&nbsp;|&nbsp;</a>
+        <a class="topr" title="English" href="../../html/en/linux.html">EN</a>
+    </nav>
+
+    <nav class="hdr">
+        <table class="hdr">
+            <tbody>
+                <tr>
+                    <td class="mid" title="Ga naar Startpagina">
+                        <a class="hdr" href="home.html">Karel</a>
+                    </td>
+                    <td class="mid sel" title="Ga naar Linux">
+                        <a class="hdr" href="linux.html">Linux</a>
+                    </td>
+                    <td class="mid" title="Ga naar Waarom Linux">
+                        <a class="hdr" href="why-linux.html">Waarom Linux</a>
+                    </td>
+                    <td class="mid" title="Ga naar Contact">
+                        <a class="hdr" href="contact.html">Contact</a>
+                    </td>
+                    <td class="mid" title="Ga naar Zoeken">
+                        <a class="hdr" href="search.html">Zoeken</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </nav>
+
+    <header>
+        <h1 title="De site van Karel Zimmer">Welkom op mijn site</h1>
+        <h2 title="Linux documenten en scripts">Mijn Linux documenten en scripts</h2>
+        <h3 id="checklists" title="Start hier">
+            Klik op 'Checklist installatie' of op het PDF-logo erachter om te
+            beginnen met de installatie van Linux
+        </h3>
+    </header>
+
+    <nav id="documents" class="topl">
+        <a class="topr" title="Ga naar de onderkant van de pagina" href="#bottom">ONDERKANT</a>
+        <a class="topr">&nbsp;|&nbsp;</a>
+        <a class="topr" title="Ga naar de onderkant van de pagina" href="linux.html">BOVENKANT</a>
+        <a class="topr">&nbsp;|&nbsp;</a>
+        <a class="topr" title="Ga naar scripts" href="#scripts">SCRIPTS</a>
+        <a class="topr">&nbsp;|&nbsp;</a>
+        <a class="topr" title="Ga naar documenten" href="#documents">DOCUMENTEN</a>
+    </nav>
+
+    <table>
+        <col class="t3c1">
+        <col class="t3c2">
+        <col class="t3c3">
+        <thead>
+            <tr>
+                <th title="Documenten" colspan=3>
+                    Documenten<code> (git clone https://github.com/karelzimmer/kz-docs.git)</code>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td title="Checklist als OpenDocument Tekst">
+                    <a href="../../data/linux/kz-docs/Checklist-installatie-Ubuntu-desktop.odt">
+                        Checklist installatie Ubuntu
+                    </a>
+                </td>
+                <td class="mid" title="Checklist als PDF">
+                    <a class="img"
+                        href="../../data/linux/kz-docs/Checklist-installatie-Ubuntu-desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Checklist installatie">
+                    Checklist voor het installeren van Ubuntu desktop
+                </td>
+            </tr>
+            <tr>
+                <td title="Checklist als OpenDocument Tekst">
+                    <a href="../../data/linux/kz-docs/Checklist-installatie-Debian-desktop.odt">
+                        Checklist installatie Debian
+                    </a>
+                </td>
+                <td class="mid" title="Checklist als PDF">
+                    <a class="img"
+                        href="../../data/linux/kz-docs/Checklist-installatie-Debian-desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Checklist installatie">
+                    Checklist voor het installeren van Debian desktop
+                </td>
+            </tr>
+            <tr>
+                <td title="Checklist als OpenDocument Tekst">
+                    <a href="../../data/linux/kz-docs/Checklist-overzetten-Windows-naar-Linux.odt">
+                        Checklist overzetten
+                    </a>
+                </td>
+                <td class="mid" title="Checklist als PDF">
+                    <a class="img"
+                        href="../../data/linux/kz-docs/Checklist-overzetten-Windows-naar-Linux.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Checklist overzetten">
+                    Checklist voor het overzetten van Microsoft Windows naar Ubuntu of Debian
+                </td>
+            </tr>
+            <tr>
+                <td title="Formulier als OpenDocument Tekst">
+                    <a href="../../data/linux/kz-docs/Innameformulier-overstappen-Windows-naar-Linux.odt">
+                        Innameformulier overstappen
+                    </a>
+                </td>
+                <td class="mid" title="Formulier als PDF">
+                    <a class="img" href="../../data/linux/kz-docs/Innameformulier-overstappen-Windows-naar-Linux.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Innameformulier overstappen">
+                    Innameformulier voor het overstappen van Microsoft Windows naar Ubuntu of Debian
+                </td>
+            </tr>
+            <tr>
+                <td title="Tekstbestand">
+                    <a href="../../data/linux/kz-docs/Linux-info.txt">Linux informatie</a>
+                </td>
+                <td class="mid" title="Tekstbestand als PDF">
+                    <a class="img" href="../../data/linux/kz-docs/Linux-info.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Linux informatie">Tekstbestand met Linux informatie</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+
+    <nav id="scripts" class="topl">
+        <a class="topr" title="Ga naar de onderkant van de pagina" href="#bottom">ONDERKANT</a>
+        <a class="topr">&nbsp;|&nbsp;</a>
+        <a class="topr" title="Ga naar de bovenkant van de pagina" href="linux.html">BOVENKANT</a>
+        <a class="topr">&nbsp;|&nbsp;</a>
+        <a class="topr" title="Ga naar scripts" href="#scripts">SCRIPTS</a>
+        <a class="topr">&nbsp;|&nbsp;</a>
+        <a class="topr" title="Ga naar documents" href="#documents">DOCUMENTEN</a>
+    </nav>
+
+    <table>
+        <col class="t3c1">
+        <col class="t3c2">
+        <col class="t3c3">
+        <thead>
+            <tr>
+                <th title="Scripts" colspan=3>Scripts
+                    <code> (git clone https://github.com/karelzimmer/kz-scripts.git)</code>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td title="Download pakket kz">
+                    <a href="../downloads/kz/kz_365_all.deb">Pakket kz</a>
+                </td>
+                <td class="mid" title="Download pakket kz">
+                    <a class="img" href="../downloads/kz/kz_365_all.deb">
+                        <img src="../../data/common/deb.svg" alt="Installer pakket kz" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Download pakket kz">
+                    Alle Linux documents en scripts in één Debian-pakket,
+                    voor het gebruik van dit pakket zie 'Checklist installatie' hierboven
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz">kz</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="kz">Opdracht uitvoeren</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz">kz</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="kz completion">Tabvoltooiingsscript voor kz</td>
+            </tr>
+            <tr>
+                <td title="Portable Object Template als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz.pot">kz</a> .pot
+                </td>
+                <td class="mid" title="Portable Object Template als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz.pot.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="kz.pot">Portable Object Template voor kz</td>
+            </tr>
+            <tr>
+                <td title="Portable Object als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/locale/nl/LC_MESSAGES/kz.po">kz</a> .po
+                </td>
+                <td class="mid" title="Portable Object als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/locale/nl/LC_MESSAGES/kz.po.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="kz.po">Portable Object voor kz</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz.1">kz.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="kz.1">Handleiding voor kz</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-backup">kz-backup</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-backup.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Backup">Reservekopie maken</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-backup">kz-backup</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-backup.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Backup">Tabvoltooiingsscript voor kz-backup</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-backup.1">kz-backup.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-backup.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Backup">Handleiding voor kz-backup</td>
+            </tr>
+            <tr>
+                <td title="Bureaubladconfiguratiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/applications/kz-backup.desktop">kz-backup.desktop</a>
+                </td>
+                <td class="mid" title="Bureaubladconfiguratiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/applications/kz-backup.desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Backup">Bureaubladconfiguratiebestand voor kz-backup</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-build">kz-build</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-build.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Build">Pakket kz-bouwen</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-build">kz-build</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-build.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Build">Tabvoltooiingsscript voor kz-build</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-build.1">kz-build.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-build.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Build">Handleiding voor kz-build</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-ckname">kz-ckname</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-ckname.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Check Name">Bestandsnamen controleren</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-ckname">kz-ckname</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-ckname.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Check Name">Tabvoltooiingsscript voor kz-ckname</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-ckname.1">kz-ckname.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-ckname.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Check Name">Handleiding voor kz-ckname</td>
+            </tr>
+            <tr>
+                <td title="Bureaubladconfiguratiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/applications/kz-cockpit.desktop">kz-cockpit.desktop</a>
+                </td>
+                <td class="mid" title="Bureaubladconfiguratiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/applications/kz-cockpit.desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Cockpit">Bureaubladconfiguratiebestand voor Cockpit in Google Chrome</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz_common.py">
+                        kz_common.py
+                    </a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz_common.py.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Common for Python scripts">Algemene module voor Python scripts</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz_common.py.1">kz_common.py.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz_common.py.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Common for Python scripts">Handleiding voor kz_common.py</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz_common.sh">
+                        kz_common.sh
+                    </a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz_common.sh.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Common for shell scripts">Algemene module voor shell scripts</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz_common.sh.1">kz_common.sh.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz_common.sh.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Common for shell scripts">Handleiding voor kz_common.sh</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-deploy">kz-deploy</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-deploy.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Deploy">Pakket kz-distribueren</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-deploy">kz-deploy</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-deploy.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Deploy">Tabvoltooiingsscript voor kz-deploy</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-deploy.1">kz-deploy.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-deploy.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Deploy">Handleiding voor kz-deploy</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-getdeb">kz-getdeb</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-getdeb.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Get deb">Pakket kz-installeren</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-getdeb">kz-getdeb</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-getdeb.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Get deb">Tabvoltooiingsscript voor kz-getdeb</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-getdeb.1">kz-getdeb.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-getdeb.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Get deb">Handleiding voor kz-getdeb</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-gset">kz-gset</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-gset.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Get/set (GNOME) settings">GUI wijzigen</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-gset">kz-gset</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-gset.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Get/set (GNOME) settings">Tabvoltooiingsscript voor kz-gset</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-gset.1">kz-gset.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-gset.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Get/set (GNOME) settings">Handleiding voor kz-gset</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-install">kz-install</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-install.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Install">Apps installeren</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-install">kz-install</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-install.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Install">Tabvoltooiingsscript voor kz-install</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-install.1">kz-install.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-install.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Install">Handleiding voor kz-install</td>
+            </tr>
+            <tr>
+                <td title="Bureaubladconfiguratiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/applications/kz-install.desktop">kz-install.desktop</a>
+                </td>
+                <td class="mid" title="Bureaubladconfiguratiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/applications/kz-install.desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Install">Bureaubladconfiguratiebestand voor kz-install</td>
+            </tr>
+            <tr>
+                <td title="PolicyKit actiedefinitiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/polkit-1/actions/nl.karelzimmer.kz-install.policy">nl.karelzimmer.kz-install.policy</a>
+                </td>
+                <td class="mid" title="PolicyKit actiedefinitiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/polkit-1/actions/nl.karelzimmer.kz-install.policy.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Install">PolicyKit actiedefinitiebestand voor kz-install</td>
+            </tr>
+            <tr>
+                <td title="Installatiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-install-ubuntu-desktop.sh">
+                        kz-install-ubuntu-desktop
+                    </a>
+                </td>
+                <td class="mid" title="Installatiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-install-ubuntu-desktop.sh.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Installeer Ubuntu">Installatiebestand voor Ubuntu desktop</td>
+            </tr>
+            <tr>
+                <td title="Installatiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-install-debian-desktop.sh">
+                        kz-install-debian-desktop
+                    </a>
+                </td>
+                <td class="mid" title="Installatiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-install-debian-desktop.sh.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Installeer Debian">Installatiebestand voor Debian desktop</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-ivp">kz-ivp</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-ivp.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="IVP scripts">Scripts controleren</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-ivp">kz-ivp</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-ivp.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="IVP Scripts">Tabvoltooiingsscript voor kz-ivp</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-ivp.1">kz-ivp.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-ivp.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="IVP Scripts">Handleiding voor kz-ivp</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-menu">kz-menu</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-menu.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Menu">Installatiemenu tonen</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-menu">kz-menu</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-menu.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Menu">Tabvoltooiingsscript voor kz-menu</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-menu.1">kz-menu.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-menu.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Menu">Handleiding voor kz-menu</td>
+            </tr>
+            <tr>
+                <td title="Bureaubladconfiguratiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/applications/kz-menu.desktop">kz-menu.desktop</a>
+                </td>
+                <td class="mid" title="Bureaubladconfiguratiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/applications/kz-menu.desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Menu">Bureaubladconfiguratiebestand voor kz-menu</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-restore">kz-restore</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-restore.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Restore">Reservekopie terugzetten</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-restore">kz-restore</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-restore.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Restore">Tabvoltooiingsscript voor kz-restore</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-restore.1">kz-restore.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-restore.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Restore">Handleiding voor kz-restore</td>
+            </tr>
+            <tr>
+                <td title="Bureaubladconfiguratiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/applications/kz-restore.desktop">kz-restore.desktop</a>
+                </td>
+                <td class="mid" title="Bureaubladconfiguratiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/applications/kz-restore.desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Restore">Bureaubladconfiguratiebestand voor kz-restore</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-setup">kz-setup</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-setup.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Setup">Apps instellen</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-setup">kz-setup</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-setup.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Setup">Tabvoltooiingsscript voor kz-setup</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-setup.1">kz-setup.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-setup.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Setup">Handleiding voor kz-setup</td>
+            </tr>
+            <tr>
+                <td title="Bureaubladconfiguratiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/applications/kz-setup.desktop">kz-setup.desktop</a>
+                </td>
+                <td class="mid" title="Bureaubladconfiguratiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/applications/kz-setup.desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Setup">Bureaubladconfiguratiebestand voor kz-setup</td>
+            </tr>
+            <tr>
+                <td title="Instelbestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-setup-ubuntu-desktop.sh">
+                        kz-setup-ubuntu-desktop
+                    </a>
+                </td>
+                <td class="mid" title="Instelbestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-setup-ubuntu-desktop.sh.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Setup Ubuntu">Instelbestand voor Ubuntu desktop</td>
+            </tr>
+            <tr>
+                <td title="Instelbestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-setup-debian-desktop.sh">
+                        kz-setup-debian-desktop
+                    </a>
+                </td>
+                <td class="mid" title="Instelbestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-setup-debian-desktop.sh.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Setup Debian">Instelbestand voor Debian desktop</td>
+            </tr>
+            <tr>
+                <td title="Bureaubladconfiguratiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/applications/kz-teams.desktop">kz-teams.desktop</a>
+                </td>
+                <td class="mid" title="Bureaubladconfiguratiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/applications/kz-teams.desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="MS Teams">Bureaubladconfiguratiebestand voor voor Microsoft Teams in Google Chrome</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-update">kz-update</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-update.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Update">Systeem bijwerken</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-update">kz-update</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-update.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Update">Tabvoltooiingsscript voor kz-update</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-update.1">kz-update.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-update.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Update">Handleiding voor kz-update</td>
+            </tr>
+            <tr>
+                <td title="Bureaubladconfiguratiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/applications/kz-webmin.desktop">kz-webmin.desktop</a>
+                </td>
+                <td class="mid" title="Bureaubladconfiguratiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/applications/kz-webmin.desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Webmin">Bureaubladconfiguratiebestand voor Webmin in Google Chrome</td>
+            </tr>
+            <tr>
+                <td title="Script als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/bin/kz-wifi">kz-wifi</a>
+                </td>
+                <td class="mid" title="Script als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/bin/kz-wifi.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Wifi">Wifi-gegevens tonen</td>
+            </tr>
+            <tr>
+                <td title="Tabvoltooiingsscript als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-wifi">kz-wifi</a> completion
+                </td>
+                <td class="mid" title="Tabvoltooiingsscript als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/bash-completion/completions/kz-wifi.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Wifi">Tabvoltooiingsscript voor kz-wifi</td>
+            </tr>
+            <tr>
+                <td title="Man-pagina als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-wifi.1">kz-wifi.1</a>
+                </td>
+                <td class="mid" title="Man-pagina als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/man/nl/man1/kz-wifi.1.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Wifi">Handleiding voor kz-wifi</td>
+            </tr>
+            <tr>
+                <td title="Bureaubladconfiguratiebestand als tekstbestand">
+                    <a href="../../data/linux/kz-scripts/usr/share/applications/kz-setup.desktop">kz-wifi.desktop</a>
+                </td>
+                <td class="mid" title="Bureaubladconfiguratiebestand als PDF">
+                    <a class="img" href="../../data/linux/kz-scripts/usr/share/applications/kz-wifi.desktop.pdf">
+                        <img src="../../data/common/pdf.svg" alt="Als PDF" width=38 height=38>
+                    </a>
+                </td>
+                <td title="Wifi">Bureaubladconfiguratiebestand voor kz-wifi</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <nav id="bottom" class="topl">
+        <a class="topr" title="Ga naar de onderkant van de pagina" href="#bottom">ONDERKANT</a>
+        <a class="topr">&nbsp;|&nbsp;</a>
+        <a class="topr" title="Ga naar de bovenkant van de pagina" href="linux.html">BOVENKANT</a>
+        <a class="topr">&nbsp;|&nbsp;</a>
+        <a class="topr" title="Ga naar scripts" href="#scripts">SCRIPTS</a>
+        <a class="topr">&nbsp;|&nbsp;</a>
+        <a class="topr" title="Ga naar documenten" href="#documents">DOCUMENTEN</a>
+    </nav>
+
+    <footer>
+        <p>
+            Gemaakt met
+            <a class="img" title="VS Code" href="https://code.visualstudio.com/">
+                <img src="../../data/common/code.png" alt="Visual Studio Code" width=38 height=38>
+            </a>
+            Visual Studio Code en
+            <a class="img" title="Ubuntu" href="https://ubuntu.com/">
+                <img src="../../data/common/ubuntu.png" alt="Ubuntu" width=40 height=62>
+            </a>
+            Ubuntu
+            <a class="img" title="GNU" href="https://www.gnu.org/">
+                <img src="../../data/common/gnu.png" alt="GNU" width=38 height=38>
+            </a>
+            GNU
+            <a class="img" title="Tux" href="https://www.linux.org/">
+                <img src="../../data/common/linux.png" alt="Tux" width=38 height=38>
+            </a>
+            Linux.
+        </p>
+        <p>
+            <a  class="img" title="Valide HTML5"
+                href="https://validator.w3.org/check?uri=http%3A%2F%2Fkarelzimmer.nl%2Fhtml%2Fcontact.html">
+                <img src="../../data/common/html5.png" alt="Valide HTML5" width="64" height="64">
+            </a>
+            <a  class="img" title="Valide CCS3"
+                href="https://jigsaw.w3.org/css-validator/validator?uri=karelzimmer.nl%2Fcss%2Fstijlblad.css">
+                <img src="../../data/common/css3.gif" alt="Valide CCS3" width="88" height="31">
+            </a>
+            <a class="img" title="Creative Commons Publiek Domein Verklaring"
+                href="https://creativecommons.org/publicdomain/zero/1.0/deed.nl">
+                <img    src="../../data/common/cc0.png"
+                        alt="Creative Commons Publiek Domein Verklaring"
+                        width="88" height="31">
+            </a>
+        </p>
+    </footer>
+</body>
+
+</html>

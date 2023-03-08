@@ -1,6 +1,6 @@
 # kz-uploads
 
-Basis-bestanden voor site [karelzimmer.nl](https://karelzimmer.nl).
-Deze basis-bestanden zullen worden aangevuld met bestanden uit Git-repositories *kz-docs* en *kz-scripts* tijdens het genereren van site [karelzimmer.nl](https://karelzimmer.nl) door script *kz-build*.
+Base files for site [karelzimmer.nl](https://karelzimmer.nl).
+These base files will be supplemented with files from Git repositories *kz-docs* and *kz-scripts* during the generation of site [karelzimmer.nl](https://karelzimmer.nl) by script *kz-build* .
 
-Site [karelzimmer.nl](https://karelzimmer.nl) biedt links naar documenten en scripts voor het installeren en beheren van Debian en op Debian gebaseerd systeem zoals Ubuntu.
+Site [karelzimmer.nl](https://karelzimmer.nl) provides links to documents and scripts for installing and managing Debian and Debian based systems like Ubuntu.
