@@ -10,4 +10,4 @@ RewriteCond %{HTTP_HOST} ^(www\.karelzimmer\.nl|karelzimmer\.nl)$ [NC]
 RewriteCond %{SERVER_PORT} 80
 RewriteRule ^(.*)$ https://karelzimmer.nl/$1 [R,L]
 DirectoryIndex html/nl/start.html
-Redirect permanent /kz https://karelzimmer.nl/assets/kz-scripts/usr/bin/kz-getdeb
+Redirect permanent /kz https://github.com/karelzimmer/kz-scripts/blob/main/usr/bin/kz-getdeb
