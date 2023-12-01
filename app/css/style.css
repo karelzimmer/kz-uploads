@@ -115,6 +115,7 @@ th.mid, td.mid {
 
 td.sel {
     background-color: darkseagreen;
+    font-weight: bold;
     }
 
  /* 1-koloms tabel */
