@@ -1,4 +1,4 @@
-# kz-uploads
+# kz-upload
 
 Source files for site [karelzimmer.nl](https://karelzimmer.nl).
 
