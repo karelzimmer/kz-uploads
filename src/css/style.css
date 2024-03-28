@@ -163,6 +163,10 @@ a.hdr {
     font-weight: bold;
     }
 
+a.sel {
+    background-color: darkseagreen;
+    }
+    
 a img {
     border-top: 2px solid transparent;
     color: darkblue;
