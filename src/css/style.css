@@ -2,7 +2,7 @@
 ###############################################################################
 # Style sheet for website karelzimmer.nl.
 #
-# Written by Karel Zimmer <info@karelzimmer.nl>.
+# Written by Karel Zimmer <info@karelzimmer.nl>
 # CC0 1.0 <https://creativecommons.org/publicdomain/zero/1.0>.
 ###############################################################################
 */
@@ -118,12 +118,12 @@ td.sel {
     font-weight: bold;
     }
 
- /* 1-koloms tabel */
+/* 1-koloms tabel */
 .t1c1 {
     width: 100%;
     }
 
- /* 2-koloms tabel */
+/* 2-koloms tabel */
 .t2c1 {
     width: 7%;
     }
