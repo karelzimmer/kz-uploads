@@ -1,6 +1,6 @@
 AddHandler x-httpd-php73 .php
 ###############################################################################
-# Server-side redirection w/.htacces (Hypertext access).
+# SPDX-FileComment: Server-side redirection w/.htacces (Hypertext access)
 #
 # SPDX-FileCopyrightText: Karel Zimmer <info@karelzimmer.nl>
 # SPDX-License-Identifier: CC0-1.0
