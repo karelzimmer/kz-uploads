@@ -15,4 +15,4 @@ These source files will be supplemented with files from Git repositories *kz-doc
 
 Site [karelzimmer.nl](https://karelzimmer.nl) provides links to documents for installing Debian and Debian-based system such as Ubuntu.
 
-More information on [karelzimmer.nl](https://karelzimmer.nl).
+More information on [karelzimmer.nl/en](https://karelzimmer.nl/en).
