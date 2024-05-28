@@ -1,13 +1,13 @@
 <!--
 ###############################################################################
-# SPDX-FileComment: Readme for repository kz-upload
+# SPDX-FileComment: Readme for repository kz-uploads
 #
 # SPDX-FileCopyrightText: Karel Zimmer <info@karelzimmer.nl>
 # SPDX-License-Identifier: CC0-1.0
 ###############################################################################
 -->
 
-# kz-upload
+# kz-uploads
 
 Source files for site [karelzimmer.nl](https://karelzimmer.nl).
 
