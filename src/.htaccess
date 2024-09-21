@@ -11,4 +11,4 @@ RewriteCond %{SERVER_PORT} 80
 RewriteRule ^(.*)$ https://karelzimmer.nl/$1 [R,L]
 DirectoryIndex html/nl/start.html
 Redirect permanent /en https://karelzimmer.nl/html/en/home.html
-Redirect permanent /get https://raw.githubusercontent.com/karelzimmer/kz-scripts/main/usr/bin/kz-get
+Redirect permanent /getkz https://raw.githubusercontent.com/karelzimmer/kz-scripts/main/usr/bin/kz-get
