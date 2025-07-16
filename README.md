@@ -13,6 +13,6 @@ Source files for site [karelzimmer.nl](https://karelzimmer.nl).
 
 These source files will be supplemented with files from Git repositories *kz-docs* and *kz-scripts* during the generation of site [karelzimmer.nl](https://karelzimmer.nl) by script `kz build`.
 
-Site [karelzimmer.nl](https://karelzimmer.nl) provides links to documents for installing and managing Debian and Debian-based system such as Ubuntu, and Red Hat and Red Hat-based systems such as Rocky Linux.
+Site [karelzimmer.nl](https://karelzimmer.nl) provides links to documents for installing and managing Debian and Debian-based system such as Ubuntu, and Red Hat-based systems such as Rocky Linux.
 
 More information on [karelzimmer.nl/en](https://karelzimmer.nl/en).
