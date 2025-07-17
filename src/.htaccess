@@ -1,10 +1,10 @@
 AddHandler x-httpd-php73 .php
-###############################################################################
+# #############################################################################
 # SPDX-FileComment: Server-side redirection w/.htacces (Hypertext access)
 #
 # SPDX-FileCopyrightText: Karel Zimmer <info@karelzimmer.nl>
 # SPDX-License-Identifier: CC0-1.0
-###############################################################################
+# #############################################################################
 RewriteEngine On
 RewriteCond %{HTTP_HOST} ^(www\.karelzimmer\.nl|karelzimmer\.nl)$ [NC]
 RewriteCond %{SERVER_PORT} 80
