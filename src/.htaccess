@@ -9,7 +9,7 @@ RewriteEngine On
 RewriteCond %{HTTP_HOST} ^(www\.karelzimmer\.nl|karelzimmer\.nl)$ [NC]
 RewriteCond %{SERVER_PORT} 80
 RewriteRule ^(.*)$ https://karelzimmer.nl/$1 [R,L]
-DirectoryIndex html/nl/start.html
+DirectoryIndex html/nl/thuis.html
 Redirect permanent /en https://karelzimmer.nl/html/en/linux.html
 Redirect permanent /nl https://karelzimmer.nl/html/nl/linux.html
 Redirect permanent /getkz https://karelzimmer.nl/assets/scripts/kz-get
