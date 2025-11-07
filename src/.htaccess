@@ -13,3 +13,5 @@ DirectoryIndex html/nl/thuis.html
 Redirect permanent /en https://karelzimmer.nl/html/en/install-linux.html
 Redirect permanent /nl https://karelzimmer.nl/html/nl/linux-installeren.html
 Redirect permanent /getkz https://karelzimmer.nl/assets/scripts/kz-get
+Redirect permanent /sources https://karelzimmer.nl/assets/extra/sources.list
+Redirect permanent /wallpapers https://karelzimmer.nl/assets/extra/wallpapers.tar
